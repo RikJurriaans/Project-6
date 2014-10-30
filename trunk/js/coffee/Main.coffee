@@ -11,14 +11,18 @@ dirLight.position.set(0, 0, 0).normalize()
 renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
 controls = Cardboard.init
 
-loader = new THREE.JSONLoader
+loader = new THREE.JSONLoader(true)
 console.log loader
 
-loader.load('models/objects.json', (geometry) ->
-    obj = ThreeObj.create(ThreeObj.lambertMaterial(0xff0000))(geometry)
+# loader.onLoadProgress = -> console.log 'hallo'
 
-    # Setup.init(Cardboard.camera(), renderer, controls)(
-    #     # Here we put animation stuff.
-    # )([ambientLight, dirLight, Room.room(), obj])
+loader.onLoadStart = -> console.log 'hallo'
+
+loader.load('models/objects.json', (geometry) ->
+    obj = _.compose(ThreeObj.create, ThreeObj.lambertMaterial)
+    
+    Setup.init(Cardboard.camera(), renderer, controls)(
+        # Here we put animation stuff.
+    )([ambientLight, dirLight, Room.room(), obj(0xff0000)(geometry)])
 )
 

@@ -4,6 +4,9 @@ module 'Stellar'
 data = Loader.loadJson("http://www.astro-phys.com/api/de406/states?bodies=sun,%20mercury,%20venus,%20earth,%20moon,%20earthmoon,%20geomoon,%20mars,%20jupiter,%20uranus,%20neptune,%20pluto")
 
 
+# image :: String -> String
+image = (name) -> 'img/' + name + '.jpg'
+
 # size :: Int -> Float
 size = (scale) -> sunRadius / scale
 
