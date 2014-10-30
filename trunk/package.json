@@ -1,5 +1,5 @@
 {
-  "name": "projectnaam",
+  "name": "Eindproject",
   "version": "1.0.0",
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -8,5 +8,23 @@
     "grunt-contrib-less": "~0.11.0",
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.6.1"
-  }
+  },
+  "description": "Frontend development project",
+  "main": "Main.js",
+  "dependencies": {
+    "express": "^4.10.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.11.1",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-less": "^0.11.4",
+    "grunt-contrib-uglify": "^0.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "socket.io": "^1.1.0",
+    "twilio": "^1.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RikJurriaans",
+  "license": "ISC"
 }

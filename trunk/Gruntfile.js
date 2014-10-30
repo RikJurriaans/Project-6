@@ -20,7 +20,21 @@ module.exports = function(grunt) {
         coffee: {
             compile: {
                 files: {
-                    'js/all.min.js': ['js/coffee/Main.coffee'],
+                    'Main.js' : 'server/coffee/Main.coffee',
+                    'js/all.min.js': [
+                                      'js/coffee/utils/Prelude.coffee', 
+                                      'js/coffee/interaction/Cardboard.coffee', 
+                                      'js/coffee/interaction/Mouse.coffee', 
+                                      'js/coffee/data/Loading.coffee', 
+                                      'js/coffee/render/Render.coffee', 
+                                      'js/coffee/geom/ThreeObj.coffee', 
+                                      'js/coffee/camera/Camera.coffee', 
+                                      'js/coffee/light/Light.coffee', 
+                                      'js/coffee/interaction/Animation.coffee', 
+                                      'js/coffee/Settings.coffee', 
+                                      'js/coffee/stellar/Stellar.coffee', 
+                                      'js/coffee/Setup.coffee', 
+                                      'js/coffee/Main.coffee']
                 }
             }
         },
@@ -29,23 +43,21 @@ module.exports = function(grunt) {
 		    dist: {
 		        src: [
                     'js/vendor/three.min.js',
+                    'js/vendor/Cardboard.js',
                     'js/vendor/underscore-min.js',
+                    'js/vendor/StereoEffect.js',
+                    'js/vendor/DeviceOrientationControls.js',
+                    'js/vendor/OrbitControls.js',
+                    'js/vendor/jph.js',
                     'js/all.min.js'
                 ],
 		        dest: 'js/all.min.js',
 		    }
 		},
 
-		uglify: {
-		    build: {
-		        src: 'js/all.min.js',
-		        dest: 'js/all.min.js'
-		    }
-		},
-
 		watch: {
 		    scripts: {
-		        files: ['css/less/*.less', 'js/*/*.coffee', 'js/*/*.js'],
+		        files: ['css/less/*.less', 'js/*/*.coffee', 'js/*/*.js', 'server/coffee/*'],
 		        tasks: ['less', 'coffee', 'concat'],
 		        options: {
 		            spawn: false,
@@ -64,7 +76,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', ['concat', 'uglify', 'watch']);
+    grunt.registerTask('default', ['concat', 'watch']);
 
 };
 

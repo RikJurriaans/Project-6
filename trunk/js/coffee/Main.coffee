@@ -1,43 +1,20 @@
-# settings
-settings = 
-    scene : new THREE.Scene
-    camera : new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000)
-    renderer : new THREE.WebGLRenderer
-    maxWidth : window.innerWidth
-    maxHeight : window.innerHeight
+# Rik Jurriaans 2014.
+# google cardboard experiment
+#
+# In this file we build the world.
 
+ambientLight = Light.ambientLight 0xffffff
 
-# general things
-setSize = ->
-    @renderer.setSize(@maxWidth, @maxHeight)
+dirLight = Light.directionalLight 0x000044
+dirLight.position.set(0, 0, 0).normalize()
 
-renderReady = ->
-    document.body.appendChild(@renderer.domElement)
-    @camera.position.z = 5
-    setInterval(_.bind(render, settings), 1000/24)
+renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
+controls = Cardboard.init
 
-render = -> @renderer.render(@scene, @camera)
+planets = Stellar.planets('earth', 'jupiter', 'mercury', 'neptune', 'venus', 'mars', 'pluto', 'uranus')
 
-addToScene = (object) -> @scene.add(object)
-addToScene = (settings) -> _.bind(addToScene, settings)
+sceneObjects = _.union([ambientLight, dirLight], Stellar.basic, planets)
 
-# build more complex functions out of simple ones
-setup = (settings) -> 
-    _.bind(_.compose(setSize, renderReady), settings)
-
-
-getCube = ->
-    geometry = new THREE.BoxGeometry(1, 1, 1)
-    material = new THREE.MeshBasicMaterial( color: 0x00ff00 )
-    new THREE.Mesh(geometry, material)
-
-
-
-# All objects in the scene
-objects = [ getCube() ]
-
-# Setup scene, renderer, camera and render.
-setup(settings)
-
-# Add all objects to the scene.
-_.map(objects, addToScene(settings))
+Setup.init(Cardboard.camera(), renderer, controls)(
+    # Here we put animation stuff.
+)(sceneObjects)
