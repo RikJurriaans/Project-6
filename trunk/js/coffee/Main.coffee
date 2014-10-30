@@ -11,10 +11,14 @@ dirLight.position.set(0, 0, 0).normalize()
 renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
 controls = Cardboard.init
 
-planets = Stellar.planets('earth', 'jupiter', 'mercury', 'neptune', 'venus', 'mars', 'pluto', 'uranus')
+loader = new THREE.JSONLoader
+console.log loader
 
-sceneObjects = _.union([ambientLight, dirLight], Stellar.basic, planets)
+loader.load('models/objects.json', (geometry) ->
+    obj = ThreeObj.create(ThreeObj.lambertMaterial(0xff0000))(geometry)
 
-Setup.init(Cardboard.camera(), renderer, controls)(
-    # Here we put animation stuff.
-)(sceneObjects)
+    # Setup.init(Cardboard.camera(), renderer, controls)(
+    #     # Here we put animation stuff.
+    # )([ambientLight, dirLight, Room.room(), obj])
+)
+

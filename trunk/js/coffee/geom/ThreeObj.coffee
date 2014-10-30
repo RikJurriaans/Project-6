@@ -1,11 +1,5 @@
 module 'ThreeObj'
 
-ThreeObj.set = (object) -> 
-    (property) -> 
-        (val) ->
-            object.position[property] = val
-            object
-
 lambertMaterial = (object) -> new THREE.MeshLambertMaterial(object)
     
 # texture :: Image -> ThreeLambertMaterial

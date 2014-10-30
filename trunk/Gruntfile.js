@@ -20,12 +20,13 @@ module.exports = function(grunt) {
         coffee: {
             compile: {
                 files: {
-                    'Main.js' : 'server/coffee/Main.coffee',
                     'js/all.min.js': [
                                       'js/coffee/utils/Prelude.coffee', 
                                       'js/coffee/interaction/Cardboard.coffee', 
                                       'js/coffee/interaction/Mouse.coffee', 
                                       'js/coffee/data/Loading.coffee', 
+                                      'js/coffee/render/Shader.coffee', 
+                                      'js/coffee/anne/Room.coffee', 
                                       'js/coffee/render/Render.coffee', 
                                       'js/coffee/geom/ThreeObj.coffee', 
                                       'js/coffee/camera/Camera.coffee', 
@@ -57,7 +58,7 @@ module.exports = function(grunt) {
 
 		watch: {
 		    scripts: {
-		        files: ['css/less/*.less', 'js/*/*.coffee', 'js/*/*.js', 'server/coffee/*'],
+		        files: ['css/less/*.less', 'js/*/*.coffee', 'js/coffee/*.coffee', 'js/coffee/*/*.coffee', 'js/*/*.js'],
 		        tasks: ['less', 'coffee', 'concat'],
 		        options: {
 		            spawn: false,

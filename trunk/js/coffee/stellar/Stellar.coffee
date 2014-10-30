@@ -18,8 +18,6 @@ sizes =
     mars: size 26, 
     pluto: size 26
 
-# image :: String -> String
-image = (name) -> 'img/' + name + '.jpg'
 
 # texture :: Object
 textures = 
