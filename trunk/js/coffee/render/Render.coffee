@@ -4,7 +4,8 @@ Render.fullBrowser = (renderer) ->
     renderer.setSize(window.innerWidth, window.innerHeight)
 
 Render.fsRenderer = ->
-    renderer = new THREE.WebGLRenderer
+    renderer = new THREE.WebGLRenderer(antialias: true)
+    renderer.setClearColor(0xeeeeee)
     document.body.appendChild(renderer.domElement)
     renderer
 

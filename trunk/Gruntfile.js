@@ -22,6 +22,7 @@ module.exports = function(grunt) {
                 files: {
                     'js/all.min.js': [
                                       'js/coffee/utils/Prelude.coffee', 
+                                      'js/coffee/anne/Outside.coffee', 
                                       'js/coffee/interaction/Cardboard.coffee', 
                                       'js/coffee/interaction/Mouse.coffee', 
                                       'js/coffee/data/Loading.coffee', 
@@ -33,7 +34,6 @@ module.exports = function(grunt) {
                                       'js/coffee/light/Light.coffee', 
                                       'js/coffee/interaction/Animation.coffee', 
                                       'js/coffee/Settings.coffee', 
-                                      'js/coffee/stellar/Stellar.coffee', 
                                       'js/coffee/Setup.coffee', 
                                       'js/coffee/Main.coffee']
                 }

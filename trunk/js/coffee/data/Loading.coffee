@@ -1,21 +1,22 @@
 module 'Loader'
 
-Loader.loadJson = (url) -> 
+Loader.loadFile = (url) ->
     xmlhttp = new XMLHttpRequest()
     xmlhttp.open("GET", url, false)
     xmlhttp.send()
-    JSON.parse xmlhttp.response
+    return xmlhttp
+
+Loader.loadJson = (url) -> JSON.parse(Loader.loadFile(url).response)
+
+Loader.loadShader = (vShaderUrl, fShaderUrl) ->
+    vShader = Loader.loadFile vShaderUrl
+    fShader = Loader.loadFile fShaderUrl
+    vertexShader: vShader.response, fragmentShader: fShader.response
+
 
 loader = new THREE.ObjectLoader
 
-Loader.loadModel = (url) -> (funct) ->
-    loader.load("models/objects.json", (obj) -> funct obj)
+Loader.loadModel = (url, func) -> 
+    loader.load(url, (obj) -> func obj)
 
-Loader.bulkLoad = (urls...) ->
-    func = _.map(urls, Loader.loadModel)
-    console.log func
-    # _.map(func, this.call)
-    # _.map(, (obj) -> console.log(obj))
-
-# Loader.objectLoad = () ->
 
