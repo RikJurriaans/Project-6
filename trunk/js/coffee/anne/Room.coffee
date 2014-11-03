@@ -1,8 +1,6 @@
 module 'Room'
 
     
-# image :: String -> String
-image = (name) -> 'img/' + name + '.jpg'
 
 # room :: void -> ThreeMesh
 # Room.room = _.compose(ThreeObj.create, Shader.shaderMaterial)
@@ -29,17 +27,6 @@ image = (name) -> 'img/' + name + '.jpg'
 #         roomMaterial
 #     )
 
-Room.ground = -> 
-    # mat = ThreeObj.phongMaterial(ambient: 0xffffff, shininess: 20, color: 0xff0000, specular: 0x050505)
-    mat = ThreeObj.texture(image 'floor')
-    mat.depthWrite = true
-
-    grn = ThreeObj.create(mat)(new THREE.CircleGeometry(100, 100))
-    grn.rotation.x = -Math.PI / 2
-    grn.position.y = -10
-    # grn.receiveShadow = true
-
-    return grn
 
 
 

@@ -28,18 +28,19 @@ resize = ->
     @renderer.setSize(window.innerWidth, window.innerHeight)
 
 # Renderer :: Renderer -> Renderer
-Cardboard.effect = (renderer) -> 
+Cardboard.effect = (renderer) ->
     renderer.effect = new THREE.StereoEffect(renderer)
     renderer.effect.targetDistance = 50
     renderer.effect.separation = 0.6
     renderer.effect.shadowMapEnabled = true
+    renderer.effect.shadowMapType = THREE.PCFSoftShadowMap
     fullBrowser(renderer.effect)
     renderer
 
 Cardboard.camera = ->
     camera = new THREE.PerspectiveCamera(90,
-                                         window.innerWidth / window.innerHeight, 
-                                         1, 
+                                         window.innerWidth / window.innerHeight,
+                                         1,
                                          10000)
     camera.position.z = 3
     # camera.position.y = 20
@@ -50,8 +51,8 @@ Cardboard.init = (scene, camera, renderer) ->
     controls = new THREE.DeviceOrientationControls(camera, true)
 
     orbitControls = new THREE.OrbitControls(camera, renderer.domElement)
-    orbitControls.noZoom = true
-    orbitControls.noPan = true
+    orbitControls.noZoom = false
+    orbitControls.noPan = false
     orbitControls.autoRotate = false
 
     initControls = _.bind(initControls, renderer: renderer, controls : controls, orbitControls : orbitControls)

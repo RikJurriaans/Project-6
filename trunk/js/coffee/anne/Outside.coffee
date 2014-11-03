@@ -1,67 +1,67 @@
 module 'Outside'
 
 Outside.sunlight = ->
-    hemilight = new THREE.HemisphereLight(0x3385ff, 0xffc871, 1)
+    hemilight = new THREE.HemisphereLight(0x3385ff, 0xffc871, 0.05)
     # hemilight.color.setHSL(0.6, 1, 0.6)
     # hemilight.groundColor.setHSL(0.095, 1, 0.75)
     hemilight.position.set(0, 500, 0)
 
-    dirlight = new THREE.DirectionalLight(0xffffff, 1)
-    # dirlight.color.setHSL(0.1, 1, 0.95)
-    # dirlight.position.set(-1, 1.75, 1)
-    dirlight.position.multiplyScalar(1000)
+    d = 50
 
-    # dirlight.castShadow = true
-
-    # dirlight.shadowMapWidth = 2048
-    # dirlight.shadowMapHeight = 2048
-
-    # d = 5
-
-    sunlight = new THREE.DirectionalLight
-    sunlight.position.set(250, 250, 250)
-    sunlight.intensity = 0.5
+    sunlight = new THREE.DirectionalLight(0xffffff, 0.5)
+    sunlight.position.set(-5, 5, 0)
+    sunlight.shadowDarkness = 0.5
     sunlight.castShadow = true
-    sunlight.shadowCameraVisible = true
-    sunlight.shadowCameraNear = 250
-    sunlight.shadowCameraFar = 600
-    sunlight.shadowCameraLeft = -200
-    sunlight.shadowCameraRight = 200
-    sunlight.shadowCameraTop = 200
-    sunlight.shadowCameraBottom = -200
+    sunlight.position.multiplyScalar(50)
 
-    # dirlight.shadowCameraVisible = true
+    # sunlight.shadowCameraVisible = true
 
-    # dirlight.shadowCameraLeft = -d
-    # dirlight.shadowCameraRight = d
-    # dirlight.shadowCameraTop = d
-    # dirlight.shadowCameraBottom = -d
+    sunlight.shadowCameraLeft = d
+    sunlight.shadowCameraRight = -d
+    sunlight.shadowCameraTop = d
+    sunlight.shadowCameraBottom = -d
 
-    # dirlight.shadowCameraFar = 3500
-    # dirlight.shadowBias = -0.0001
-    # dirlight.shadowDarkness = 0.35
+    sunlight.shadowMapWidth = 3000
+    sunlight.shadowMapHeight = 3000
 
-    [hemilight, dirlight]
+    sunlight.shadowCameraNear = 10
+    # sunlight.shadowCameraFar = 3500
+    sunlight.shadowBias = -0.00001
+
+    [sunlight, hemilight]
 
 
-# Outside.sky = ->
-#     # shaders = Loader.loadShader('shaders/skyVertexShader.shader', 'shaders/skyFragmentShader.shader')
+Outside.ground = ->
+    # mat = ThreeObj.phongMaterial(ambient: 0xffffff, shininess: 20, color: 0xff0000, specular: 0x050505)
+    mat = ThreeObj.texture(Utils.image 'floor')
+
+    grn = ThreeObj.create(mat)(new THREE.CircleGeometry(100, 100))
+    grn.rotation.x = -Math.PI / 2
+    grn.position.y = -10
+    # grn.castShadow = true
+    grn.receiveShadow = true
+
+    return grn
+
+Outside.sky = ->
+    shaders = Loader.loadShader('shaders/skyVertexShader.shader', 'shaders/skyFragmentShader.shader')
     
-#     # uniforms = 
-#     #     topColor: { type: 'c', value: new THREE.Color(0x0077ff) }
-#     #     bottomColor: { type: 'c', value: new THREE.Color(0xffffff) }
-#     #     offset: { type: 'f', value: 33 }
-#     #     exponent: { type: 'f', value: 0.6 }
+    uniforms =
+        topColor: { type: 'c', value: new THREE.Color(0x0077ff) }
+        bottomColor: { type: 'c', value: new THREE.Color(0xffffff) }
+        offset: { type: 'f', value: 33 }
+        exponent: { type: 'f', value: 0.6 }
 
-#     skyGeo = new THREE.SphereGeometry(1000, 15, 15)
-#     # skyMat = new THREE.ShaderMaterial( 
-#     #     vertexShader: shaders.vertexShader, 
-#     #     fragmentShader: shaders.fragmentShader, 
-#     #     uniforms: uniforms, 
-#     #     side: THREE.BackSide 
-#     # )
+    skyGeo = new THREE.SphereGeometry(1000, 15, 15)
+    skyMat = new THREE.ShaderMaterial(
+        vertexShader: shaders.vertexShader,
+        fragmentShader: shaders.fragmentShader,
+        uniforms: uniforms,
+        side: THREE.BackSide
+    )
 
-#     ThreeObj.create(ThreeObj.basicMaterial(0x0000ff))(skyGeo)
+    ThreeObj.create(ThreeObj.basicMaterial(0x0000ff))(skyGeo)
+
 
 # treeMaterial = ThreeObj.phongMaterial()
    

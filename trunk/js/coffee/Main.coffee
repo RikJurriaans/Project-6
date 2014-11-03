@@ -4,23 +4,20 @@
 # In this file we build the world.
 
 
-# ambientLight = Light.ambientLight 0x000000
+# ambientLight = Light.ambientLight 0x0c0c0c
 # ambientLight.intensity = 0.3
 
 # dirLight = Light.directionalLight 0xffffff
-# dirLight.intensity = 0.5
-# dirLight.position.set(0, 10, 0)
+# dirLight.intensity = 0.2
+# dirLight.position.set(0, 5, 0)
 
 renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
 controls = Cardboard.init
 
-# hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xa38354, 0.5)
+cube = ThreeObj.testCube(x:1, y:1, z:1)
+cube.position.set(2, 2, 1)
 
-# cube = ThreeObj.testCube(x: 1, y: 1, z:1)
-# cube.position.set(4, 1, 1)
-
-ground = Room.ground()
-
+ground = Outside.ground()
 sun = Outside.sunlight()
 
 
@@ -31,8 +28,12 @@ Loader.loadModel('models/room.json', (obj) ->
     room.scale.y = 3
     room.scale.z = 3
 
+    for x in room.children
+        x.castShadow = true
+        x.receiveShadow = true
+
     Setup.init(Cardboard.camera(), renderer, controls)(
         # Here we put animation stuff.
-    )([ground, sun[0], sun[1], room])
+    )([room, ground, sun[0], sun[1]])
 
 )

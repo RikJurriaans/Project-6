@@ -5,7 +5,7 @@ lambertMaterial = (object) -> new THREE.MeshLambertMaterial(object)
 # texture :: Image -> ThreeLambertMaterial
 ThreeObj.texture = (texture) ->
     texture = THREE.ImageUtils.loadTexture(texture)
-    ThreeObj.basicMaterial( map: texture )
+    ThreeObj.basicMaterial(map: texture)
 
 # basicMaterial :: Color -> ThreeBasicMaterial
 ThreeObj.basicMaterial = (props) ->
@@ -14,11 +14,7 @@ ThreeObj.basicMaterial = (props) ->
 # lambertMaterial :: Color -> ThreeLambertMaterial
 ThreeObj.lambertMaterial = (color) -> lambertMaterial(color)
 
-ThreeObj.phongMaterial = (props) -> 
-    phn = new THREE.MeshPhongMaterial(props)
-    phn.castShadow = true
-    phn.receiveShadow = true
-    return phn
+ThreeObj.phongMaterial = (props) -> new THREE.MeshPhongMaterial(props)
 
 # boxGeometry :: Object -> ThreeMesh
 ThreeObj.boxGeometry = (size) ->
@@ -28,13 +24,18 @@ ThreeObj.boxGeometry = (size) ->
 ThreeObj.sphereGeometry = (radius, wsegments, hsegments) ->
     new THREE.SphereGeometry(radius, wsegments, hsegments)
 
+# planeGeometry :: Int -> Int -> ThreeGeometry
 ThreeObj.planeGeometry = (width, height) ->
     new THREE.PlaneGeometry(width, height)
 
 # create :: Material -> Geometry -> ThreeMesh
 ThreeObj.create = (material) ->
-    (geometry) -> 
+    (geometry) ->
         new THREE.Mesh(geometry, material)
 
-ThreeObj.testCube = (size) -> 
-    _.compose(ThreeObj.create, ThreeObj.lambertMaterial)(0x00ff00)(ThreeObj.boxGeometry(size))
+# testCube :: Size -> ThreeMesh
+ThreeObj.testCube = (size) ->
+    obj = _.compose(ThreeObj.create, ThreeObj.lambertMaterial)(0xff0000)(ThreeObj.boxGeometry(size))
+    obj.castShadow = true
+    obj.receiveShadow = true
+    return obj

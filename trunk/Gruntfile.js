@@ -22,6 +22,7 @@ module.exports = function(grunt) {
                 files: {
                     'js/all.min.js': [
                                       'js/coffee/utils/Prelude.coffee', 
+                                      'js/coffee/utils/Utils.coffee', 
                                       'js/coffee/anne/Outside.coffee', 
                                       'js/coffee/interaction/Cardboard.coffee', 
                                       'js/coffee/interaction/Mouse.coffee', 

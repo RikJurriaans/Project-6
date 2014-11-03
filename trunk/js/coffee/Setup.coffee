@@ -3,12 +3,10 @@ module 'Setup'
 # Scene :: Scene -> ThreeObject -> undefined
 add = (scene) -> (object) -> scene.add(object)
 
-# Init :: camera, renderer, controls -> Function, Float -> Array -> Scene
-Setup.init = (camera, renderer, controls = null) -> (renderFunc, frameRate = Render.framerate 30) ->
+# Init :: camera, renderer, controls -> Function -> Array -> Scene
+Setup.init = (camera, renderer, controls = null) -> (renderFunc) ->
     scene = new THREE.Scene
-    # scene.autoUpdate = false
-    scene.fog = new THREE.Fog(0xffffff, .01, 10000)
-    scene.fog.color.setHSL(0.5, 0, 1)
+    scene.fog = new THREE.Fog(0xeeeeee, 1, 100000)
 
     # standard template for controls object
     if controls?
@@ -35,8 +33,7 @@ Setup.init = (camera, renderer, controls = null) -> (renderFunc, frameRate = Ren
     requestAnimationFrame(renderloop)
 
     # add objects to the scene
-    (objects) -> _.map(objects, (obj) -> 
-        obj.depthWrite = false
+    (objects) -> _.map(objects, (obj) ->
         add(scene)(obj)
     )
 
