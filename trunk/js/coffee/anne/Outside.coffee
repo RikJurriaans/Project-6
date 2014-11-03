@@ -43,24 +43,24 @@ Outside.ground = ->
 
     return grn
 
-Outside.sky = ->
-    shaders = Loader.loadShader('shaders/skyVertexShader.shader', 'shaders/skyFragmentShader.shader')
+# Outside.sky = ->
+#     shaders = Loader.loadShader('shaders/skyVertexShader.shader', 'shaders/skyFragmentShader.shader')
     
-    uniforms =
-        topColor: { type: 'c', value: new THREE.Color(0x0077ff) }
-        bottomColor: { type: 'c', value: new THREE.Color(0xffffff) }
-        offset: { type: 'f', value: 33 }
-        exponent: { type: 'f', value: 0.6 }
+#     uniforms =
+#         topColor: { type: 'c', value: new THREE.Color(0x0077ff) }
+#         bottomColor: { type: 'c', value: new THREE.Color(0xffffff) }
+#         offset: { type: 'f', value: 33 }
+#         exponent: { type: 'f', value: 0.6 }
 
-    skyGeo = new THREE.SphereGeometry(1000, 15, 15)
-    skyMat = new THREE.ShaderMaterial(
-        vertexShader: shaders.vertexShader,
-        fragmentShader: shaders.fragmentShader,
-        uniforms: uniforms,
-        side: THREE.BackSide
-    )
+#     skyGeo = new THREE.SphereGeometry(1000, 15, 15)
+#     skyMat = new THREE.ShaderMaterial(
+#         vertexShader: shaders.vertexShader,
+#         fragmentShader: shaders.fragmentShader,
+#         uniforms: uniforms,
+#         side: THREE.BackSide
+#     )
 
-    ThreeObj.create(ThreeObj.basicMaterial(0x0000ff))(skyGeo)
+#     ThreeObj.create(ThreeObj.basicMaterial(0x0000ff))(skyGeo)
 
 
 # treeMaterial = ThreeObj.phongMaterial()

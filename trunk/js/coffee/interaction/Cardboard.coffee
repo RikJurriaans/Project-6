@@ -40,7 +40,7 @@ Cardboard.effect = (renderer) ->
 Cardboard.camera = ->
     camera = new THREE.PerspectiveCamera(90,
                                          window.innerWidth / window.innerHeight,
-                                         1,
+                                         0.1,
                                          10000)
     camera.position.z = 3
     # camera.position.y = 20

@@ -14,26 +14,35 @@
 renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
 controls = Cardboard.init
 
-cube = ThreeObj.testCube(x:1, y:1, z:1)
-cube.position.set(2, 2, 1)
-
 ground = Outside.ground()
 sun = Outside.sunlight()
 
+# Er moet een preloader in...
+Room.create((room) ->
+    console.log room
 
-Loader.loadModel('models/room.json', (obj) ->
-    room = obj
-    room.position.y = -5
-    room.scale.x = 3
-    room.scale.y = 3
-    room.scale.z = 3
-
-    for x in room.children
-        x.castShadow = true
-        x.receiveShadow = true
+    room.position.y = -1
+    room.scale.x = 10
+    room.scale.y = 10
+    room.scale.z = 10
 
     Setup.init(Cardboard.camera(), renderer, controls)(
         # Here we put animation stuff.
     )([room, ground, sun[0], sun[1]])
-
 )
+
+
+
+
+    # room = obj
+    # room.position.y = -5
+    # room.scale.x = 3
+    # room.scale.y = 3
+    # room.scale.z = 3
+
+    # for x in room.children
+    #     x.castShadow = true
+    #     x.receiveShadow = true
+
+
+# )
