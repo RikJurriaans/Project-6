@@ -5,14 +5,14 @@ lambertMaterial = (object) -> new THREE.MeshLambertMaterial(object)
 # texture :: Image -> ThreeLambertMaterial
 ThreeObj.texture = (texture) ->
     texture = THREE.ImageUtils.loadTexture(texture)
-    ThreeObj.basicMaterial(map: texture)
+    ThreeObj.lambertMaterial(map: texture)
 
 # basicMaterial :: Color -> ThreeBasicMaterial
 ThreeObj.basicMaterial = (props) ->
     basic = new THREE.MeshBasicMaterial(props)
 
-# lambertMaterial :: Color -> ThreeLambertMaterial
-ThreeObj.lambertMaterial = (color) -> lambertMaterial(color)
+# lambertMaterial :: Object -> ThreeLambertMaterial
+ThreeObj.lambertMaterial = (props) -> lambertMaterial(props)
 
 ThreeObj.phongMaterial = (props) -> new THREE.MeshPhongMaterial(props)
 

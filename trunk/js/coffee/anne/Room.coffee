@@ -1,7 +1,7 @@
 module 'Room'
 
 Room.create = (fun) ->
-    room = Loader.loadModel('models/room.json', fun)
+    room = Loader.loadModel(Utils.model('room'), fun)
 
 
 

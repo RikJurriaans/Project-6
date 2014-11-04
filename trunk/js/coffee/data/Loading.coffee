@@ -13,7 +13,6 @@ Loader.loadShader = (vShaderUrl, fShaderUrl) ->
     fShader = Loader.loadFile fShaderUrl
     vertexShader: vShader.response, fragmentShader: fShader.response
 
-
 loader = new THREE.ObjectLoader
 
 Loader.loadModel = (url, func) -> 

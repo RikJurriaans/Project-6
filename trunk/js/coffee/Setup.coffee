@@ -6,7 +6,9 @@ add = (scene) -> (object) -> scene.add(object)
 # Init :: camera, renderer, controls -> Function -> Array -> Scene
 Setup.init = (camera, renderer, controls = null) -> (renderFunc) ->
     scene = new THREE.Scene
-    scene.fog = new THREE.Fog(0xeeeeee, 1, 100000)
+    scene.fog = new THREE.Fog(0xeeeeee, 0.1, 300)
+
+    console.log camera
 
     # standard template for controls object
     if controls?

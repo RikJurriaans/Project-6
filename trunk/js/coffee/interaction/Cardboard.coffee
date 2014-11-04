@@ -43,8 +43,6 @@ Cardboard.camera = ->
                                          0.1,
                                          10000)
     camera.position.z = 3
-    # camera.position.y = 20
-    # camera.position.x = 0
     return camera
 
 Cardboard.init = (scene, camera, renderer) ->

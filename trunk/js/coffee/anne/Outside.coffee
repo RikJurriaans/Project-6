@@ -6,27 +6,22 @@ Outside.sunlight = ->
     # hemilight.groundColor.setHSL(0.095, 1, 0.75)
     hemilight.position.set(0, 500, 0)
 
-    d = 50
 
-    sunlight = new THREE.DirectionalLight(0xffffff, 0.5)
-    sunlight.position.set(-5, 5, 0)
-    sunlight.shadowDarkness = 0.5
-    sunlight.castShadow = true
-    sunlight.position.multiplyScalar(50)
+    sunlight = new THREE.DirectionalLight(0xffffff, 1.5)
+    sunlight.position.set(-100, 100, -100)
 
-    # sunlight.shadowCameraVisible = true
+    # TODO: Optimize shadows.
+    # sunlight.shadowDarkness = 0.5
+    # sunlight.castShadow = true
 
-    sunlight.shadowCameraLeft = d
-    sunlight.shadowCameraRight = -d
-    sunlight.shadowCameraTop = d
-    sunlight.shadowCameraBottom = -d
+    # sunlight.position.multiplyScalar(50)
 
-    sunlight.shadowMapWidth = 3000
-    sunlight.shadowMapHeight = 3000
+
+    sunlight.shadowMapWidth = 1000
+    sunlight.shadowMapHeight = 1000
 
     sunlight.shadowCameraNear = 10
-    # sunlight.shadowCameraFar = 3500
-    sunlight.shadowBias = -0.00001
+    sunlight.shadowBias = -0.0001
 
     [sunlight, hemilight]
 
@@ -35,10 +30,9 @@ Outside.ground = ->
     # mat = ThreeObj.phongMaterial(ambient: 0xffffff, shininess: 20, color: 0xff0000, specular: 0x050505)
     mat = ThreeObj.texture(Utils.image 'floor')
 
-    grn = ThreeObj.create(mat)(new THREE.CircleGeometry(100, 100))
+    grn = ThreeObj.create(mat)(new THREE.CircleGeometry(200, 200))
     grn.rotation.x = -Math.PI / 2
     grn.position.y = -10
-    # grn.castShadow = true
     grn.receiveShadow = true
 
     return grn
