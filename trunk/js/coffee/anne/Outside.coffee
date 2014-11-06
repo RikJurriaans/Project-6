@@ -7,7 +7,7 @@ Outside.sunlight = ->
     hemilight.position.set(0, 500, 0)
 
 
-    sunlight = new THREE.DirectionalLight(0xffffff, 1.5)
+    sunlight = new THREE.DirectionalLight(0xffffff, .5)
     sunlight.position.set(-100, 100, -100)
 
     # TODO: Optimize shadows.
@@ -27,12 +27,11 @@ Outside.sunlight = ->
 
 
 Outside.ground = ->
-    # mat = ThreeObj.phongMaterial(ambient: 0xffffff, shininess: 20, color: 0xff0000, specular: 0x050505)
     mat = ThreeObj.texture(Utils.image 'floor')
 
     grn = ThreeObj.create(mat)(new THREE.CircleGeometry(200, 200))
     grn.rotation.x = -Math.PI / 2
-    grn.position.y = -10
+    grn.position.y = -19
     grn.receiveShadow = true
 
     return grn
