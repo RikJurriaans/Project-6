@@ -27,7 +27,7 @@ Setup.init = (camera, renderer, controls = null) -> (renderFunc) ->
         else renderer.render(scene, camera)
 
         if renderFunc?
-            renderFunc(renderer, camera, scene, controls)
+            renderFunc(scene, renderer, camera, controls)
 
         requestAnimationFrame(renderloop)
 
