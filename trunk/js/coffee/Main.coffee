@@ -31,9 +31,8 @@ add = (a) -> a
 
 substract = (a) -> -a
 
-flipOp = (op) -> 
-    if op == add 
-        return substract
+flipOp = (op) ->
+    if op == add return substract
     else return add
 
 # Er moet een preloader in...
