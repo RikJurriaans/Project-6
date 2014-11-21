@@ -126,13 +126,17 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
                 time = 700
                 counter = 0
 
+                Sound.ended(Sound.happySad, ->
+                    Sound.pause(Sound.happySad)
+                )
+                Sound.pause(Sound.happy)
+                Sound.play(Sound.happySad)
+
                 lightEffect = ->
                     objects[0].visible = !objects[0].visible
                     objects[1].visible = !objects[1].visible
 
                     time /= 2
-
-                    console.log counter
 
                     clearInterval(window.timer)
                     if counter < 6
