@@ -3,6 +3,9 @@
 #
 # In this file we build the world.
 
+firstEffect = false
+secondEffect = false
+
 ambientLight = new THREE.AmbientLight 0xcccccc
 # console.log ambientLight
 
@@ -18,7 +21,6 @@ light.shadowCameraRight = -d
 light.shadowCameraTop = d
 light.shadowCameraBottom = -d
 
-# console.log light
 
 renderer = _.compose(Cardboard.effect, Render.fsRenderer)()
 controls = Cardboard.init
@@ -31,12 +33,8 @@ add = (a) -> a
 
 substract = (a) -> -a
 
-flipOp = (op) ->
-    if op == add return substract
-    else return add
-
-# Er moet een preloader in...
 Loader.loadModel(Utils.model('omgeving'), (obj) ->
+    # ik weet het lelijk maar fuck it.
     wolk1 = obj.children[1]
     wolk1.position.normalize().set(0, -20, -150)
     wolk1.oldX = wolk1.position.x
@@ -62,13 +60,15 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
     wolk3.material = ThreeObj.lambertMaterial (0xffffff)
 
 
-    roomLightOff = false
+    firstEvent = setInterval(->
+        firstEffect = true
+        clearInterval(firstEvent)
+    , Timings.firstEvent)
 
-    # dit kan abstracter.
-    timer = setInterval(->
-        roomLightOff = true
-        clearInterval timer
-    , 5000)
+    secondEvent = setInterval(->
+        secondEvent = true
+        clearInterval(secondEvent)
+    , Timings.secondEvent)
 
 
     Room.create((room, objects) ->
@@ -115,24 +115,36 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
         stoel.position.set(-4, -13, 0)
         stoel.rotation.set(0, 10, 0)
 
-        console.log stoel
 
         Setup.init(Cardboard.camera(), renderer, controls)((scene) ->
-            # Here we put animation stuff.
             wolk1.position.x = wolk1.oldX += wolk1.operation(.03)
             wolk2.position.x = wolk2.oldX += wolk2.operation(.03)
             wolk3.position.x = wolk3.oldX += wolk3.operation(.03)
 
-            # if roomLightOff == true
-            #     room.position.y = -5
-            #     room.position.z = -4
-            #     room.scale.set(2,2,2)
-            #     room.children[4].visible = true
-            #     roomLightOff = false
-            # console.log scene
+            # De eerste fase
+            if firstEffect == true
+                time = 700
+                counter = 0
 
-            # if wolk1.position.x == 100
-            #     wolk1.operation = flipOp wolk1.operation
+                lightEffect = ->
+                    objects[0].visible = !objects[0].visible
+                    objects[1].visible = !objects[1].visible
+
+                    time /= 2
+
+                    console.log counter
+
+                    clearInterval(window.timer)
+                    if counter < 6
+                        window.timer = setInterval(lightEffect, time)
+                    counter++
+
+                window.timer = setInterval(lightEffect, time)
+
+                firstEffect = false
+
+            if secondEvent == true
+                secondEvent = false
 
         )([objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground])
     )

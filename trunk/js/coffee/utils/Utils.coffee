@@ -7,3 +7,5 @@ Utils.image = (name) -> 'img/' + name + '.jpg'
 Utils.texture = (name) -> 'img/textures/' + name + '.jpg'
 
 Utils.model = (name) -> 'models/' + name + '.json'
+
+Utils.toMilliseconds = (seconds) -> seconds * 1000

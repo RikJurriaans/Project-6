@@ -9,9 +9,10 @@ Room.create = (fun) ->
     lambLight = new THREE.PointLight(0xffffff, 2, 20)
     lambLight.position.set(25,20,-5)
 
-    Loader.loadModel(Utils.model('room'), (obj) -> 
+    Loader.loadModel(Utils.model('room'), (obj) ->
         Loader.loadModel(Utils.model('stoel'), (stoel) ->
             fun(obj, [pointLight, lambLight, stoel])
         )
     )
 
+Room.lightOff = (room) ->
