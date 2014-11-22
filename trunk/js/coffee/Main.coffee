@@ -29,6 +29,12 @@ ground = Outside.ground()
 sun = Outside.sunlight()
 
 
+# Het geluid wordt minder happy.
+Sound.ended(Sound.happySad, ->
+    console.log 'hallo'
+    Sound.play(Sound.sad)
+)
+
 add = (a) -> a
 
 substract = (a) -> -a
@@ -66,7 +72,7 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
     , Timings.firstEvent)
 
     secondEvent = setInterval(->
-        secondEvent = true
+        secondEffect = true
         clearInterval(secondEvent)
     , Timings.secondEvent)
 
@@ -126,11 +132,7 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
                 time = 700
                 counter = 0
 
-                Sound.ended(Sound.happySad, ->
-                    Sound.pause(Sound.happySad)
-                )
-                Sound.pause(Sound.happy)
-                Sound.play(Sound.happySad)
+                Sound.play(Sound.lamp)
 
                 lightEffect = ->
                     objects[0].visible = !objects[0].visible
@@ -147,8 +149,11 @@ Loader.loadModel(Utils.model('omgeving'), (obj) ->
 
                 firstEffect = false
 
-            if secondEvent == true
-                secondEvent = false
+            if secondEffect == true
+                Sound.pause(Sound.happy)
+                Sound.play(Sound.happySad)
+
+                secondEffect = false
 
         )([objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground])
     )
