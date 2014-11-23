@@ -31,10 +31,24 @@ sun = Outside.sunlight()
 Sound.ended(Sound.happySad, -> Sound.play(Sound.sad))
 
 
+window.startExperience = ->
+    Sound.play(Sound.happy)
+
+    firstEvent = setInterval(->
+        firstEffect = true
+        clearInterval(firstEvent)
+    , Timings.firstEvent)
+
+    secondEvent = setInterval(->
+        secondEffect = true
+        clearInterval(secondEvent)
+    , Timings.secondEvent)
+
+
+
 add = (a) -> a
 
 substract = (a) -> -a
-
 
 Loader.loadModel(Utils.model('stoel'), (stoel) ->
     stoel.scale.set(6, 6, 6)
@@ -80,17 +94,6 @@ Loader.loadModel(Utils.model('stoel'), (stoel) ->
                     wolk3.material = ThreeObj.lambertMaterial (0xffffff)
 
 
-
-                    # event timing.
-                    firstEvent = setInterval(->
-                        firstEffect = true
-                        clearInterval(firstEvent)
-                    , Timings.firstEvent)
-
-                    secondEvent = setInterval(->
-                        secondEffect = true
-                        clearInterval(secondEvent)
-                    , Timings.secondEvent)
 
 
 

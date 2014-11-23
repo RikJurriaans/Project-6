@@ -55,7 +55,6 @@ Cardboard.init = (scene, camera, renderer) ->
 
     initControls = _.bind(initControls, renderer: renderer, controls : controls, orbitControls : orbitControls)
     window.addEventListener('deviceorientation', initControls, false)
-    window.addEventListener('deviceorientation', initControls, false)
 
     window.onresize = _.bind(resize, camera: camera, renderer: renderer)
 

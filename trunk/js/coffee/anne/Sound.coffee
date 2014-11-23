@@ -5,7 +5,9 @@ Sound.play = (sound) -> sound.play()
 Sound.ended = (sound, callback) ->
     sound.addEventListener('ended', callback, false)
 
-Sound.happy = Dom.selectElement('happy')
+loopSound = (sound) -> sound
+
+Sound.happy = loopSound(Dom.selectElement('happy'))
 Sound.sad = Dom.selectElement('sad')
 Sound.happySad = Dom.selectElement('happySad')
 Sound.lamp = Dom.selectElement('lamp')
