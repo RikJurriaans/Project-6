@@ -1,5 +1,20 @@
 module 'ThreeObj'
 
+
+ThreeObj.translate = (param) -> (v) -> (obj) -> obj.position[param] -= v
+
+ThreeObj.translateX = ThreeObj.translate('x')
+ThreeObj.translateY = ThreeObj.translate('y')
+ThreeObj.translateZ = ThreeObj.translate('z')
+
+ThreeObj.translateAll = (func) -> (xs, v) -> _.map(xs, func(v))
+
+ThreeObj.translateAllX = ThreeObj.translateAll(ThreeObj.translateX)
+ThreeObj.translateAllY = ThreeObj.translateAll(ThreeObj.translateZ)
+
+
+
+
 lambertMaterial = (object) -> new THREE.MeshLambertMaterial(object)
 
 # texture :: Image -> ThreeLambertMaterial

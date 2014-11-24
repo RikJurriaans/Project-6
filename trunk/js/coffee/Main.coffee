@@ -94,9 +94,6 @@ Loader.loadModel(Utils.model('stoel'), (stoel) ->
                     wolk3.material = ThreeObj.lambertMaterial (0xffffff)
 
 
-
-
-
                     Room.create((room, objects) ->
                         room.position.y = -10
                         room.scale.x = 6
@@ -139,6 +136,14 @@ Loader.loadModel(Utils.model('stoel'), (stoel) ->
 
                         mistHold = 250
 
+                        
+                        # alle objecten verplaatsen
+                        objects = [bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+
+                        ThreeObj.translateAllX(objects, 10)
+                        ThreeObj.translateAllY(objects, 20)
+
+
                         Setup.init(Cardboard.camera(), renderer, controls)((scene) ->
                             wolk1.position.x = wolk1.oldX += wolk1.operation(.03)
                             wolk2.position.x = wolk2.oldX += wolk2.operation(.03)
@@ -178,7 +183,7 @@ Loader.loadModel(Utils.model('stoel'), (stoel) ->
 
                                 secondEffect = false
 
-                        )([bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground])
+                        )(objects)
                     )
                 )
             )
