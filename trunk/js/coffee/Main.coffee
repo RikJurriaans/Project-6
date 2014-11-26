@@ -56,8 +56,10 @@ substract = (a) -> -a
 Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) ->
     luieStoel.scale.set(-6, 6, -6)
     luieStoel.position.normalize().set(29, -10, 1)
-    luieStoel.material = ThreeObj.texture(Utils.texture 'wall-texture')
+    # luieStoel.material = ThreeObj.texture(Utils.texture 'wall-texture')
     luieStoel.rotation.set(0, .4, 0)
+
+    TweenLite.to(luieStoel.material, 20, { opacity: 0 })
 
 
     muurplank.scale.set(-6, 6, -6)
@@ -138,6 +140,16 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
     # right wall
     room.children[8].material = ThreeObj.texture(Utils.texture 'wall-texture2')
 
+    # smallerTime = 100
+    # smallerSize = .5
+
+    # Make the walls move towards user.
+    # for i in [0..8] by 1
+    #     TweenLite.to(room.children[i].scale, smallerTime, { x:smallerSize, y:smallerSize, z:smallerSize })
+    #     TweenLite.to(room.children[i].position, smallerTime, { x: room.children[0].position.x * smallerSize, y:room.children[0].position.x * smallerSize, z: room.children[0].position.x * smallerSize})
+
+    luieStoel.material.transparent = true
+    TweenLite.to(luieStoel.material, 10, {opacity: 0, onComplete: -> console.log 'hallo' })
 
     mistHold = 250
 
@@ -164,6 +176,8 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
             mistHold = 150
 
             Sound.play(Sound.lamp)
+
+            luieStoel.material.opacity = 0.5
 
             lightEffect = ->
                 objects[0].visible = !objects[0].visible
