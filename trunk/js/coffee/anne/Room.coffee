@@ -14,3 +14,4 @@ Room.create = (fun) ->
             fun(obj, [pointLight, lambLight, stoel])
         )
     )
+

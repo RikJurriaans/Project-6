@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 		    dist: {
 		        src: [
                     'js/vendor/three.min.js',
-                    'js/vendor/tweenjs-0.min.js',
+                    'js/vendor/TweenLite.min.js',
                     'js/vendor/Cardboard.js',
                     'js/vendor/underscore-min.js',
                     'js/vendor/StereoEffect.js',
