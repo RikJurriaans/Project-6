@@ -1,10 +1,10 @@
 module 'Outside'
 
 Outside.sunlight = ->
-    hemilight = new THREE.HemisphereLight(0x3385ff, 0xffc871, 0.05)
+    # hemilight = new THREE.HemisphereLight(0x3385ff, 0xffc871, 0.05)
     # hemilight.color.setHSL(0.6, 1, 0.6)
     # hemilight.groundColor.setHSL(0.095, 1, 0.75)
-    hemilight.position.set(0, 500, 0)
+    # hemilight.position.set(0, 500, 0)
 
 
     sunlight = new THREE.DirectionalLight(0xffffff, .5)
@@ -23,7 +23,7 @@ Outside.sunlight = ->
     sunlight.shadowCameraNear = 10
     sunlight.shadowBias = -0.0001
 
-    [sunlight, hemilight]
+    [sunlight]
 
 
 add = (a) -> a

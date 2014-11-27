@@ -194,7 +194,6 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
     room.children[4].visible = false
     # Roof bottom-part
     room.children[5].material = ThreeObj.lambertMaterial(color: 0x000000)
-    room.children[5].visible = false
     # back wall
     room.children[6].material = ThreeObj.texture(Utils.texture 'wall-texture-back')
     # left wall
@@ -239,7 +238,6 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
 
             Sound.play(Sound.lamp)
 
-            room.children[5].visible = true
 
 
             lightEffect = ->
@@ -318,13 +316,14 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
             mistHold = 0
             fifthEffect = false
 
+            fifthEffect = false
+
+        if scene.fog.far <= 1
             $('canvas').fadeOut(1000)
 
             # fade in credentials.
             $('#credits').fadeIn(1000)
             
-            fifthEffect = false
-
 
     )(sceneObj)
 )))))))))))))
