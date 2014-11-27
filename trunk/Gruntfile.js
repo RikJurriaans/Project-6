@@ -48,6 +48,7 @@ module.exports = function(grunt) {
         concat: {   
 		    dist: {
 		        src: [
+                    'js/vendor/jquery-2.1.1.min.js',
                     'js/vendor/three.min.js',
                     'js/vendor/TweenLite.min.js',
                     'js/vendor/Cardboard.js',

@@ -15,7 +15,7 @@ Loader.loadShader = (vShaderUrl, fShaderUrl) ->
 
 loader = new THREE.ObjectLoader
 
-Loader.loadModel = (url, func) -> 
+Loader.loadModel = (url, func) ->
     loader.load(url, (obj) -> func obj)
 
 

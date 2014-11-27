@@ -5,6 +5,9 @@
 
 firstEffect = false
 secondEffect = false
+thirdEffect = false
+forthEffect = false
+fifthEffect = false
 
 ambientLight = new THREE.AmbientLight 0xcccccc
 
@@ -32,7 +35,7 @@ Sound.ended(Sound.happySad, -> Sound.play(Sound.sad))
 
 
 window.startExperience = ->
-    Introscreen.fadeOut()
+    $('#introscreen').fadeOut(1000)
 
     Sound.play(Sound.happy)
 
@@ -46,21 +49,40 @@ window.startExperience = ->
         clearInterval(secondEvent)
     , Timings.secondEvent)
 
-window.startExperience()
+    thirdEvent = setInterval(->
+        thirdEffect = true
+        clearInterval(thirdEvent)
+    , Timings.thirdEvent)
+
+    forthEvent = setInterval(->
+        forthEffect = true
+        clearInterval(forthEvent)
+    , Timings.forthEffect)
+
+    fifthEvent = setInterval(->
+        fifthEffect = true
+        clearInterval(fifthEvent)
+    , Timings.fifthEffect)
+
 
 add = (a) -> a
 
 substract = (a) -> -a
 
 
-Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) ->
+Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) ->
+
     luieStoel.scale.set(-6, 6, -6)
-    luieStoel.position.normalize().set(29, -10, 1)
-    # luieStoel.material = ThreeObj.texture(Utils.texture 'wall-texture')
+    luieStoel.position.normalize().set(1, -17, 13)
+
+    luieStoel.material = ThreeObj.texture(Utils.texture 'flat-texture')
+    luieStoel.material.transparent = true
+    luieStoel.material.alphaTest = 0.1
+
     luieStoel.rotation.set(0, .4, 0)
 
-    TweenLite.to(luieStoel.material, 20, { opacity: 0 })
-
+    boekenkast.scale.set(6, 6, 6)
+    boekenkast.position.normalize().set(-16, -2, 30)
 
     muurplank.scale.set(-6, 6, -6)
     muurplank.position.normalize().set(-18, -0, -0)
@@ -76,9 +98,11 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
     bed.scale.set(5,5,5)
     bed.material = ThreeObj.texture(Utils.texture 'wall-texture')
 
+
     tafel.position.normalize().set(-15, -14, 1)
     tafel.scale.set(5,5,5)
     tafel.material = ThreeObj.texture(Utils.texture 'wall-texture')
+
 
     # omgeving.
     trees.position.normalize().set(0, -15, -200)
@@ -122,15 +146,12 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
     room.children[0].material = ThreeObj.texture(Utils.texture 'cardboard-window-1')
     # Floor
     room.children[1].material = ThreeObj.texture(Utils.texture 'floor')
-    room.children[1].receiveShadow = true
     # Plinten
     room.children[2].material = ThreeObj.lambertMaterial(color: 0xefd8b8)
     # Roof top-part
     room.children[3].material = ThreeObj.lambertMaterial(color: 0x000000)
-    room.children[3].visible = true
     # Roof middle-part
     room.children[4].material = ThreeObj.lambertMaterial(color: 0x000000)
-    room.children[4].visible = true
     # Roof bottom-part
     room.children[5].material = ThreeObj.lambertMaterial(color: 0x000000)
     # back wall
@@ -148,18 +169,18 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
     #     TweenLite.to(room.children[i].scale, smallerTime, { x:smallerSize, y:smallerSize, z:smallerSize })
     #     TweenLite.to(room.children[i].position, smallerTime, { x: room.children[0].position.x * smallerSize, y:room.children[0].position.x * smallerSize, z: room.children[0].position.x * smallerSize})
 
-    luieStoel.material.transparent = true
-    TweenLite.to(luieStoel.material, 10, {opacity: 0, onComplete: -> console.log 'hallo' })
 
     mistHold = 250
 
     
     # alle objecten verplaatsen
-    sceneObj = [luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+    sceneObj = [boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
 
     ThreeObj.translateAllX(sceneObj, 10)
     ThreeObj.translateAllY(sceneObj, 20)
 
+
+    $('#preloader').fadeOut(1000)
 
     Setup.init(Cardboard.camera(), renderer, controls)((scene) ->
         wolk1.position.x = wolk1.oldX += wolk1.operation(.03)
@@ -167,8 +188,9 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
         wolk3.position.x = wolk3.oldX += wolk3.operation(.03)
 
         if scene.fog.far > mistHold
-            scene.fog.far -= 0.1
+            scene.fog.far -= 0.3
 
+        
         # De eerste fase
         if firstEffect == true
             time = 700
@@ -176,8 +198,6 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
             mistHold = 150
 
             Sound.play(Sound.lamp)
-
-            luieStoel.material.opacity = 0.5
 
             lightEffect = ->
                 objects[0].visible = !objects[0].visible
@@ -194,14 +214,41 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
 
             firstEffect = false
 
+
         if secondEffect == true
             Sound.pause(Sound.happy)
             Sound.play(Sound.happySad)
 
+            TweenLite.to(luieStoel.material, 5, { opacity: 0 })
+
             mistHold = 100
+
+            TweenLite.to(light, 25, { intensity: .5 })
 
             secondEffect = false
 
+
+        if thirdEffect == true
+            mistHold = 75
+            TweenLite.to(sun[0], 15, { intensity: 0 })
+            thirdEffect = false
+
+
+        if forthEffect == true
+            mistHold = 30
+            forthEffect = false
+
+
+        if fifthEffect == true
+            mistHold = 0
+            fifthEffect = false
+
+            $('canvas').fadeOut(1000)
+
+            # fade in credentials.
+            $('#credits').fadeIn(1000)
+            
+            fifthEffect = false
     )(sceneObj)
-))))))))
+)))))))))
 
