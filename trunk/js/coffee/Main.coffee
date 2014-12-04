@@ -29,13 +29,12 @@ ground = Outside.ground()
 sun = Outside.sunlight()
 
 
-Sound.ended(Sound.happySad, -> Sound.play(Sound.sad))
 
 
 window.startExperience = ->
     $('#introscreen').fadeOut(1000)
 
-    Sound.play(Sound.happy)
+    # Sound.play(Sound.happy)
 
     firstEvent = setInterval(->
         firstEffect = true
@@ -68,7 +67,7 @@ add = (a) -> a
 substract = (a) -> -a
 
 
-Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+Sound.initSounds(Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
 
     luieStoel.scale.set(-6, 6, -6)
     luieStoel.position.normalize().set(1, -17, 13)
@@ -236,7 +235,7 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
             counter = 0
             mistHold = 200
 
-            Sound.play(Sound.lamp)
+            # Sound.play(Sound.lamp)
 
 
 
@@ -263,8 +262,8 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
         if secondEffect == true
             clearInterval(window.timer)
 
-            Sound.pause(Sound.happy)
-            Sound.play(Sound.happySad)
+            # Sound.pause(Sound.happy)
+            # Sound.play(Sound.happySad)
 
             # Roof top-part
             room.children[4].visible = true
@@ -326,5 +325,5 @@ Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('
             
 
     )(sceneObj)
-)))))))))))))
+))))))))))))))
 

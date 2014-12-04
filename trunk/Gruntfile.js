@@ -57,6 +57,7 @@ module.exports = function(grunt) {
                     'js/vendor/DeviceOrientationControls.js',
                     'js/vendor/OrbitControls.js',
                     'js/vendor/jph.js',
+                    'js/vendor/soundjs-0.5.2.min.js',
                     'js/all.min.js'
                 ],
 		        dest: 'js/all.min.js',
