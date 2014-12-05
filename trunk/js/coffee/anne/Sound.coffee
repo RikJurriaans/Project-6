@@ -14,13 +14,18 @@ module 'Sound'
 
 
 Sound.initSounds = (rdy) ->
+    createjs.Sound.alternateExtensions = ["mp3"]
+
     manifest = [
-        {id: 'happy', src: 'sounds/background_sound/happy.ogg'},
-        {id: 'happySad', src: 'sounds/background_sound/happy-sad.ogg'},
-        {id: 'sad', src: 'sounds/background_sound/sad.ogg'}
+        { id: 'happy', src: 'sounds/background_sound/happy.ogg' },
+        { id: 'happySad', src: 'sounds/background_sound/happy-sad.ogg' },
+        { id: 'sad', src: 'sounds/background_sound/sad.ogg' }
     ]
+
     createjs.Sound.registerManifest(manifest, '')
+
     createjs.Sound.addEventListener('fileload', rdy)
+
 
     
 
