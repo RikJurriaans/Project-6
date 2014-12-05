@@ -3,7 +3,6 @@
 #
 # In this file we build the world.
 
-# timings
 times = (->
     times = _.map([1,2,5,3,5], Utils.toMilliseconds)
     _.map(_.zip(times, [].concat([0], _.rest(times))),
@@ -12,7 +11,6 @@ times = (->
 
 times = _.map(times, (x) -> x * 5)
 effects = _.map(times, (x) -> false)
-
 
 
 light = new THREE.DirectionalLight(0xffffff, 1.5)
@@ -37,7 +35,7 @@ sun = Outside.sunlight()
 window.startExperience = ->
     $('#introscreen').fadeOut(1000)
 
-    # Sound.play(Sound.happy)
+    createjs.Sound.play('happy', { loop:-1 })
 
     events = _.map(times, (time, i) ->
         return setInterval(->
@@ -48,8 +46,6 @@ window.startExperience = ->
     )
 
 
-add = (a) -> a
-substract = (a) -> -a
 
 
 soundsReady = 0
@@ -63,6 +59,8 @@ Sound.initSounds(->
 
 doRest = ->
     Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+        # Dit is zo lelijk...
+
         luieStoel.scale.set(-6, 6, -6)
         luieStoel.position.normalize().set(1, -17, 13)
 
@@ -138,7 +136,7 @@ doRest = ->
         wolk1 = obj.children[1]
         wolk1.position.normalize().set(0, -20, -150)
         wolk1.oldX = wolk1.position.x
-        wolk1.operation = add
+        wolk1.operation = (a) -> a
 
         wolk1.scale.set(10,10,10)
         wolk1.material = ThreeObj.texture(Utils.texture 'wall-texture')
@@ -146,7 +144,7 @@ doRest = ->
         wolk2 = obj.children[3]
         wolk2.position.normalize().set(100, -30, -150)
         wolk2.oldX = wolk2.position.x
-        wolk2.operation = add
+        wolk2.operation = (a) -> a
 
         wolk2.scale.set(10,10,10)
         wolk2.material = ThreeObj.texture(Utils.texture 'wall-texture')
@@ -154,18 +152,17 @@ doRest = ->
         wolk3 = obj.children[0]
         wolk3.position.normalize().set(-200, -10, -200)
         wolk3.oldX = wolk3.position.x
-        wolk3.operation = add
+        wolk3.operation = (a) -> a
 
         wolk3.scale.set(10,10,10)
         wolk3.material = ThreeObj.lambertMaterial (0xffffff)
         wolk3.material = ThreeObj.texture(Utils.texture 'wall-texture')
-        # omgeving.
         
+
         planken.scale.set(6, 6, 6)
         planken.position.set(8,1,-9)
 
-        for i in planken.children
-            i.visible = false
+        _.map(planken.children, (x) -> x.visible = false)
 
         room.position.y = -10
         room.scale.x = 6
@@ -193,9 +190,6 @@ doRest = ->
         room.children[7].material = ThreeObj.texture(Utils.texture 'wall-texture')
         # right wall
         room.children[8].material = ThreeObj.texture(Utils.texture 'wall-texture2')
-
-        # smallerTime = 100
-        # smallerSize = .5
 
         # Make the walls move towards user.
         # for i in [0..8] by 1
@@ -229,9 +223,7 @@ doRest = ->
                 counter = 0
                 mistHold = 200
 
-                # Sound.play(Sound.lamp)
-
-
+                createjs.Sound.play('lamp')
 
                 lightEffect = ->
                     objects[0].visible = !objects[0].visible
@@ -246,7 +238,7 @@ doRest = ->
                         clearInterval(window.timer)
                         window.timer = setInterval(lightEffect, time)
 
-                TweenLite.to(huisje.material, 5, { opacity: 0 })
+                TweenLite.to(huisje.position, 5, { y: -100 })
 
                 window.timer = setInterval(lightEffect, time)
 
@@ -257,13 +249,15 @@ doRest = ->
             if effects[1] == true
                 clearInterval(window.timer)
 
-                # Sound.pause(Sound.happy)
-                # Sound.play(Sound.happySad)
+                createjs.Sound.stop('happy')
+                createjs.Sound.play('happySad')
+                    .addEventListener('complete', -> createjs.Sound.play('sad'))
 
+                
                 # Roof top-part
                 room.children[4].visible = true
 
-                TweenLite.to(luieStoel.material, 5, { opacity: 0 })
+                TweenLite.to(luieStoel.position, 5, { y: -100 })
 
                 mistHold = 150
 
@@ -295,6 +289,7 @@ doRest = ->
             if effects[3] == true
                 mistHold = 75
 
+                TweenLite.to(light, 25, { intensity: 0 })
                 TweenLite.to(planken.children[0], 1, { visible: true })
                 TweenLite.to(planken.children[1], 1, { visible: true, delay: 3 })
                 TweenLite.to(planken.children[2], 1, { visible: true, delay: 5 })

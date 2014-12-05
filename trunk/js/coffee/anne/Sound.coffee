@@ -20,6 +20,7 @@ Sound.initSounds = (rdy) ->
         { id: 'happy', src: 'sounds/background_sound/happy.ogg' },
         { id: 'happySad', src: 'sounds/background_sound/happy-sad.ogg' },
         { id: 'sad', src: 'sounds/background_sound/sad.ogg' }
+        { id: 'lamp', src: 'sounds/soundeffects/lamp.ogg' }
     ]
 
     createjs.Sound.registerManifest(manifest, '')
