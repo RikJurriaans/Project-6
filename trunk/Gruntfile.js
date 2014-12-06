@@ -26,7 +26,6 @@ module.exports = function(grunt) {
                                       'js/coffee/utils/Dom.coffee', 
                                       'js/coffee/anne/Outside.coffee', 
                                       'js/coffee/anne/Sound.coffee', 
-                                      'js/coffee/anne/Timings.coffee', 
                                       'js/coffee/anne/Introscreen.coffee', 
                                       'js/coffee/interaction/Cardboard.coffee', 
                                       'js/coffee/interaction/Mouse.coffee', 
