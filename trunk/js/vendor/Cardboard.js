@@ -1,5 +1,3 @@
-// Cardboard
-
 function Cardboard() {
 
   this.renderer = new THREE.WebGLRenderer({
@@ -28,9 +26,6 @@ function Cardboard() {
   window.addEventListener('deviceorientation', this._initControls, false);
 
   setTimeout(this.resize.bind(this), 0);
-
-  // hack for resize when iframe doesn't get a rotation event
-  // window.addEventListener('message', this.resize.bind(this), false );
 
   this.animate = this.animate.bind(this);
   setTimeout(this.play.bind(this), 0);
@@ -69,7 +64,6 @@ Cardboard.prototype.play = function() {
 };
 
 Cardboard.prototype.update = function() {
-  // hack to resize if width and height change
   if (this.width !== window.innerWidth || this.height !== window.innerHeight) {
     this.resize();
   }
@@ -82,11 +76,7 @@ Cardboard.prototype.update = function() {
 };
 
 Cardboard.prototype.render = function() {
-  //if (this.controls.freeze === false) {
   this.effect.render(this.scene, this.camera);
-  //} else {
-  //this.renderer.render(this.scene, this.camera);
-  //}
 };
 
 Cardboard.prototype.fullscreen = function() {
