@@ -3,15 +3,23 @@
 #
 # In this file we build the world.
 
+# Hier begint de preloader.
+
 times = (->
-    times = _.map([1,2,5,3,5], Utils.toMilliseconds)
+    times = _.map([5,10,25,15,25], Utils.toMilliseconds)
     _.map(_.zip(times, [].concat([0], _.rest(times))),
         (x) -> x[0] + x[1])
 )()
 
-times = _.map(times, (x) -> x * 5)
 effects = _.map(times, (x) -> false)
 
+soundsReady = 0
+
+# play start sound.
+Sound.initSounds(->
+    soundsReady++
+    if soundsReady == 3
+        doRest()
 
 light = new THREE.DirectionalLight(0xffffff, 1.5)
 light.position.set(100, 100, 100)
@@ -37,6 +45,7 @@ window.startExperience = ->
 
     createjs.Sound.play('happy', { loop:-1 })
 
+    # Make a list of events.
     events = _.map(times, (time, i) ->
         return setInterval(->
             effects[i] = true
@@ -46,20 +55,12 @@ window.startExperience = ->
     )
 
 
-
-
-soundsReady = 0
-
-# play start sound.
-Sound.initSounds(->
-    soundsReady++
-    if soundsReady == 3
-        doRest()
+standardTexture = ThreeObj.texture(Utils.texture 'flat-texture')
+standardTextureList = (children) -> _.map(children, (x) -> x.material = standardTexture)
 
 
 doRest = ->
     Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
-        # Dit is zo lelijk...
 
         luieStoel.scale.set(-6, 6, -6)
         luieStoel.position.normalize().set(1, -17, 13)
@@ -72,49 +73,30 @@ doRest = ->
 
         boekenkast.scale.set(6, 6, 6)
         boekenkast.position.set(-17, -1, 30)
-        for i in [0..12]
-            boekenkast.children[i].material = ThreeObj.texture(Utils.texture 'flat-texture')
-
+        standardTextureList(boekenkast.children)
 
         muurplank.scale.set(-6, 6, -6)
         muurplank.position.normalize().set(-18, -0, -0)
-        muurplank.material = ThreeObj.texture(Utils.texture 'wall-texture')
-        for i in [0..2]
-            muurplank.children[i].material = ThreeObj.texture(Utils.texture 'flat-texture')
+        standardTextureList(muurplank.children)
 
 
         stoel.scale.set(6, 6, 6)
         stoel.position.set(-4, -13, 0)
         stoel.rotation.set(0, 10, 0)
-        for i in [0..9]
-            stoel.children[i].material = ThreeObj.texture(Utils.texture 'flat-texture')
+        standardTextureList(stoel.children)
 
         typemachine.scale.set(-6, 6, -6)
         typemachine.position.set(-7, -6, 0)
+        standardTextureList(typemachine.children)
 
         bed.position.normalize().set(28, -14, 40)
         bed.scale.set(5,5,5)
-
-        bed.children[0].material = ThreeObj.texture(Utils.texture 'flat-texture')
-        bed.children[1].material = ThreeObj.texture(Utils.texture 'flat-texture')
-        bed.children[3].material = ThreeObj.texture(Utils.texture 'flat-texture')
-        bed.children[4].material = ThreeObj.texture(Utils.texture 'flat-texture')
-
-
-        # kussen
-        bed.children[8].material = ThreeObj.texture(Utils.texture 'flat-texture')
-        # matras
-        bed.children[5].material = ThreeObj.texture(Utils.texture 'flat-texture')
-        # dekbed
-        bed.children[6].material = ThreeObj.texture(Utils.texture 'flat-texture')
-
-        bed.children[7].material = ThreeObj.texture(Utils.texture 'flat-texture')
+        standardTextureList(bed.children)
 
 
         tafel.position.normalize().set(-10, -14, 1)
         tafel.scale.set(6,6,6)
-        for i in [0..5]
-            tafel.children[i].material = ThreeObj.texture(Utils.texture 'flat-texture')
+        standardTextureList(tafel.children)
 
 
         # omgeving.
@@ -139,7 +121,6 @@ doRest = ->
         wolk1.operation = (a) -> a
 
         wolk1.scale.set(10,10,10)
-        wolk1.material = ThreeObj.texture(Utils.texture 'wall-texture')
 
         wolk2 = obj.children[3]
         wolk2.position.normalize().set(100, -30, -150)
@@ -147,7 +128,6 @@ doRest = ->
         wolk2.operation = (a) -> a
 
         wolk2.scale.set(10,10,10)
-        wolk2.material = ThreeObj.texture(Utils.texture 'wall-texture')
 
         wolk3 = obj.children[0]
         wolk3.position.normalize().set(-200, -10, -200)
@@ -155,14 +135,14 @@ doRest = ->
         wolk3.operation = (a) -> a
 
         wolk3.scale.set(10,10,10)
-        wolk3.material = ThreeObj.lambertMaterial (0xffffff)
-        wolk3.material = ThreeObj.texture(Utils.texture 'wall-texture')
-        
 
+        standardTextureList(obj.children)
+        
         planken.scale.set(6, 6, 6)
         planken.position.set(8,1,-9)
-
         _.map(planken.children, (x) -> x.visible = false)
+        standardTextureList(planken.children)
+
 
         room.position.y = -10
         room.scale.x = 6
@@ -207,9 +187,11 @@ doRest = ->
         ThreeObj.translateAllY(sceneObj, 20)
 
 
+        # Hier stopt de preloader.
         $('#preloader').fadeOut(1000)
 
         Setup.init(Cardboard.camera(), renderer, controls)((scene) ->
+            # dit kan met tweener.
             wolk1.position.x = wolk1.oldX += wolk1.operation(.03)
             wolk2.position.x = wolk2.oldX += wolk2.operation(.03)
             wolk3.position.x = wolk3.oldX += wolk3.operation(.03)
