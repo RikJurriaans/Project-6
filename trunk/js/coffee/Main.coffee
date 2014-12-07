@@ -21,6 +21,7 @@ Sound.initSounds(->
     if soundsReady == 3
         doRest()
 
+
 light = new THREE.DirectionalLight(0xffffff, 1.5)
 light.position.set(100, 100, 100)
 
@@ -40,27 +41,27 @@ ground = Outside.ground()
 sun = Outside.sunlight()
 
 
-window.startExperience = ->
+startExperience = ->
     $('#introscreen').fadeOut(1000)
 
     createjs.Sound.play('happy', { loop:-1 })
 
     # Make a list of events.
     events = _.map(times, (time, i) ->
-        return setInterval(->
+        setInterval(->
             effects[i] = true
-            console.log 'test'
             clearInterval(events[i])
         , time)
     )
 
+$('#start').bind('click', startExperience)
 
 standardTexture = ThreeObj.texture(Utils.texture 'flat-texture')
 standardTextureList = (children) -> _.map(children, (x) -> x.material = standardTexture)
 
 
 doRest = ->
-    Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+    Loader.loadModel(Utils.model('lamp'), (lamp) -> Loader.loadModel(Utils.model('paspop'), (paspop) -> Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
 
         luieStoel.scale.set(-6, 6, -6)
         luieStoel.position.normalize().set(1, -17, 13)
@@ -145,10 +146,7 @@ doRest = ->
 
 
         room.position.y = -10
-        room.scale.x = 6
-        room.scale.y = 6
-        room.scale.z = 6
-
+        room.scale.set(6,6,6)
 
         # Window
         room.children[0].material = ThreeObj.texture(Utils.texture 'cardboard-window-1')
@@ -171,17 +169,19 @@ doRest = ->
         # right wall
         room.children[8].material = ThreeObj.texture(Utils.texture 'wall-texture2')
 
-        # Make the walls move towards user.
-        # for i in [0..8] by 1
-        #     TweenLite.to(room.children[i].scale, smallerTime, { x:smallerSize, y:smallerSize, z:smallerSize })
-        #     TweenLite.to(room.children[i].position, smallerTime, { x: room.children[0].position.x * smallerSize, y:room.children[0].position.x * smallerSize, z: room.children[0].position.x * smallerSize})
-
 
         mistHold = 250
         
+        paspop.scale.set(6,6,6)
+        paspop.position.set(-16, -4, 16)
+        standardTextureList(paspop.children)
+
+        lamp.scale.set(-6,6,6)
+        lamp.position.set
+        
 
         # alle objecten verplaatsen
-        sceneObj = [planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+        sceneObj = [lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
 
         ThreeObj.translateAllX(sceneObj, 10)
         ThreeObj.translateAllY(sceneObj, 20)
@@ -295,5 +295,5 @@ doRest = ->
                 
 
         )(sceneObj)
-    ))))))))))))))
+    ))))))))))))))))
 
