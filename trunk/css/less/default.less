@@ -1,16 +1,7 @@
 body {
     margin: 0;
     overflow: hidden;
-
-    background: #ffffff; /* Old browsers */
-    // background: #a0ffe2; /* Old browsers */
-    // background: -moz-linear-gradient(top,  #a0ffe2 0%, #e2f7ff 100%); /* FF3.6+ */
-    // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0ffe2), color-stop(100%,#e2f7ff)); /* Chrome,Safari4+ */
-    // background: -webkit-linear-gradient(top,  #a0ffe2 0%,#e2f7ff 100%); /* Chrome10+,Safari5.1+ */
-    // background: -o-linear-gradient(top,  #a0ffe2 0%,#e2f7ff 100%); /* Opera 11.10+ */
-    // background: -ms-linear-gradient(top,  #a0ffe2 0%,#e2f7ff 100%); /* IE10+ */
-    // background: linear-gradient(to bottom,  #a0ffe2 0%,#e2f7ff 100%); /* W3C */
-    // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0ffe2', endColorstr='#e2f7ff',GradientType=0 ); /* IE6-9 */
+    background: #ffffff;
 }
 
 canvas {
@@ -19,11 +10,27 @@ canvas {
     height: 100%;
 }
 
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.split {
+    position: absolute;
+    background: white;
+    width: 50%;
+    opacity: 1;
+    height: 100%;
+    z-index: 100000;
+    float: left;
+}
+
 #introscreen {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: white;
+    margin: 10px;
 
     div {
         position: relative;
@@ -36,5 +43,6 @@ canvas {
 }
 
 #credits {
+    background: white;
     display: none;
 }

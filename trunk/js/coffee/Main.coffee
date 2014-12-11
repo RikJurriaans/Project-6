@@ -5,11 +5,16 @@
 
 # Hier begint de preloader.
 
+real = [1,2,4,7,10,11]
+# fast = [1,1,1,1,1]
+
 times = (->
-    times = _.map([5,10,25,15,25], Utils.toMilliseconds)
+    times = _.map(real, Utils.toMilliseconds)
     _.map(_.zip(times, [].concat([0], _.rest(times))),
         (x) -> x[0] + x[1])
 )()
+
+times = _.map(times, (x) -> x*5)
 
 effects = _.map(times, (x) -> false)
 
@@ -18,7 +23,7 @@ soundsReady = 0
 # play start sound.
 Sound.initSounds(->
     soundsReady++
-    if soundsReady == 3
+    if soundsReady == 5
         doRest()
 
 
@@ -42,19 +47,28 @@ sun = Outside.sunlight()
 
 
 startExperience = ->
-    $('#introscreen').fadeOut(1000)
+    $('#start').off('click', startExperience)
 
-    createjs.Sound.play('happy', { loop:-1 })
+    instance = createjs.Sound.play('intro')
 
-    # Make a list of events.
-    events = _.map(times, (time, i) ->
-        setInterval(->
-            effects[i] = true
-            clearInterval(events[i])
-        , time)
+    instance.addEventListener('complete', ->
+        $('.split').fadeOut(2500)
+        instance = createjs.Sound.play('happy', { loop:-1 })
+        instance.volume = 0
+
+        TweenLite.to(instance, 1000, { volume: 100 })
+
+        # Make a list of events.
+        events = _.map(times, (time, i) ->
+            setInterval(->
+                effects[i] = true
+                clearInterval(events[i])
+            , time)
+        )
     )
 
-$('#start').bind('click', startExperience)
+
+$('#start').on('click', startExperience)
 
 standardTexture = ThreeObj.texture(Utils.texture 'flat-texture')
 standardTextureList = (children) -> _.map(children, (x) -> x.material = standardTexture)
@@ -62,15 +76,20 @@ standardTextureList = (children) -> _.map(children, (x) -> x.material = standard
 
 doRest = ->
     Loader.loadModel(Utils.model('lamp'), (lamp) -> Loader.loadModel(Utils.model('paspop'), (paspop) -> Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+        additional = new THREE.PointLight(0xffffff, 1, 13)
+        additional.position.set(0,0,0)
 
-        luieStoel.scale.set(-6, 6, -6)
-        luieStoel.position.normalize().set(1, -17, 13)
+        additional2 = new THREE.PointLight(0xffffff, .2, 0)
+        additional2.position.set(1,-1,35)
+
+        luieStoel.scale.set(-5, 5, -5)
+        luieStoel.position.set(8, -15, 25)
 
         luieStoel.material = ThreeObj.texture(Utils.texture 'flat-texture')
         luieStoel.material.transparent = true
         luieStoel.material.alphaTest = 0.1
 
-        luieStoel.rotation.set(0, .4, 0)
+        luieStoel.rotation.set(0, -5.5, 0)
 
         boekenkast.scale.set(6, 6, 6)
         boekenkast.position.set(-17, -1, 30)
@@ -88,6 +107,7 @@ doRest = ->
 
         typemachine.scale.set(-6, 6, -6)
         typemachine.position.set(-7, -6, 0)
+        console.log typemachine.children
         standardTextureList(typemachine.children)
 
         bed.position.normalize().set(28, -14, 40)
@@ -176,12 +196,15 @@ doRest = ->
         paspop.position.set(-16, -4, 16)
         standardTextureList(paspop.children)
 
-        lamp.scale.set(-6,6,6)
-        lamp.position.set
+        lamp.scale.set(-6,6,-6)
+        lamp.rotation.set(0,-1,0)
+        lamp.position.set(30,-1,0)
+        standardTextureList(lamp.children)
+
         
 
         # alle objecten verplaatsen
-        sceneObj = [lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+        sceneObj = [additional, additional2, lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
 
         ThreeObj.translateAllX(sceneObj, 10)
         ThreeObj.translateAllY(sceneObj, 20)
@@ -249,18 +272,18 @@ doRest = ->
 
 
             if effects[2] == true
-                mistHold = 100
                 TweenLite.to(sun[0], 15, { intensity: 0 })
+                TweenLite.to(additional, 12, { intensity: 0 })
 
                 TweenLite.to(bed.children[0].position, 1, { y: -1, delay: .5, onComplete: -> bed.children[0].visible = false })
                 TweenLite.to(bed.children[1].position, 1, { y: -1, delay: .3, onComplete: -> bed.children[1].visible = false })
+                TweenLite.to(bed.children[2].position, 1, { y: -1, delay: .5, onComplete: -> bed.children[2].visible = false })
                 TweenLite.to(bed.children[3].position, 1, { y: -1, delay: .6, onComplete: -> bed.children[3].visible = false })
                 TweenLite.to(bed.children[4].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[4].visible = false })
+                TweenLite.to(bed.children[5].position, 1, { y: 0, delay: .4, onComplete: -> bed.children[5].visible = false })
+                TweenLite.to(bed.children[6].position, 1, { y: .5, delay: .4, onComplete: -> bed.children[6].visible = false })
                 TweenLite.to(bed.children[7].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[7].visible = false })
                 TweenLite.to(bed.children[8].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[8].visible = false })
-
-                TweenLite.to(bed.children[5].position, 1, { y: 0, delay: .4, onComplete: -> bed.children[8].visible = false })
-                TweenLite.to(bed.children[6].position, 1, { y: .5, delay: .4, onComplete: -> bed.children[8].visible = false })
 
                 # Roof top-part
                 room.children[3].visible = true
@@ -269,7 +292,7 @@ doRest = ->
 
 
             if effects[3] == true
-                mistHold = 75
+                TweenLite.to(additional2, 25, { intensity: 0 })
 
                 TweenLite.to(light, 25, { intensity: 0 })
                 TweenLite.to(planken.children[0], 1, { visible: true })
@@ -280,19 +303,38 @@ doRest = ->
                 TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
                 TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
 
+                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> bed.children[8].visible = false })
+
+                # TweenLite.to(typemachine.children[2].position, 1, { x : 2, y: 2, z: 2 })
+                
                 effects[3] = false
 
 
-            if effects[4] == true
-                mistHold = 0
-                effects[4] = false
+            if effects[3] == true
+                TweenLite.to(additional2, 25, { intensity: 0 })
 
-            if scene.fog.far <= 10
+                TweenLite.to(light, 25, { intensity: 0 })
+                TweenLite.to(planken.children[0], 1, { visible: true })
+                TweenLite.to(planken.children[1], 1, { visible: true, delay: 3 })
+                TweenLite.to(planken.children[2], 1, { visible: true, delay: 5 })
+                TweenLite.to(planken.children[3], 1, { visible: true, delay: 6 })
+                TweenLite.to(planken.children[4], 1, { visible: true, delay: 7 })
+                TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
+                TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
+
+                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> bed.children[8].visible = false })
+
+                # TweenLite.to(typemachine.children[2].position, 1, { x : 2, y: 2, z: 2 })
+                
+
+                effects[3] = false
+
+            if effects[effects.length-1] == true
                 $('canvas').fadeOut(1000)
 
                 # fade in credentials.
                 $('#credits').fadeIn(1000)
-                
+
 
         )(sceneObj)
     ))))))))))))))))
