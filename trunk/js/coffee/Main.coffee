@@ -14,11 +14,13 @@ times = (->
         (x) -> x[0] + x[1])
 )()
 
+
 times = _.map(times, (x) -> x*5)
 
 effects = _.map(times, (x) -> false)
 
 soundsReady = 0
+
 
 # play start sound.
 Sound.initSounds(->
@@ -47,28 +49,28 @@ sun = Outside.sunlight()
 
 
 startExperience = ->
-    $('#start').off('click', startExperience)
+    $('.start').off('click', startExperience)
 
     instance = createjs.Sound.play('intro')
 
-    instance.addEventListener('complete', ->
-        $('.split').fadeOut(2500)
-        instance = createjs.Sound.play('happy', { loop:-1 })
-        instance.volume = 0
+    #instance.addEventListener('complete', ->
+    $('.split').fadeOut(2500)
+    instance = createjs.Sound.play('happy', { loop:-1 })
+    instance.volume = 0
 
-        TweenLite.to(instance, 1000, { volume: 100 })
+    TweenLite.to(instance, 1000, { volume: 100 })
 
-        # Make a list of events.
-        events = _.map(times, (time, i) ->
-            setInterval(->
-                effects[i] = true
-                clearInterval(events[i])
-            , time)
-        )
+    # Make a list of events.
+    events = _.map(times, (time, i) ->
+        setInterval(->
+            effects[i] = true
+            clearInterval(events[i])
+        , time)
     )
+    #)
 
 
-$('#start').on('click', startExperience)
+$('.start').on('click', startExperience)
 
 standardTexture = ThreeObj.texture(Utils.texture 'flat-texture')
 standardTextureList = (children) -> _.map(children, (x) -> x.material = standardTexture)
@@ -112,6 +114,7 @@ doRest = ->
 
         bed.position.normalize().set(28, -14, 40)
         bed.scale.set(5,5,5)
+        console.log bed
         standardTextureList(bed.children)
 
 
@@ -169,7 +172,7 @@ doRest = ->
         room.scale.set(6,6,6)
 
         # Window
-        room.children[0].material = ThreeObj.texture(Utils.texture 'cardboard-window-1')
+        room.children[0].material = ThreeObj.texture(Utils.texture 'flat-texture')
         # Floor
         room.children[1].material = ThreeObj.texture(Utils.texture 'floor')
         # Plinten
@@ -280,10 +283,10 @@ doRest = ->
                 TweenLite.to(bed.children[2].position, 1, { y: -1, delay: .5, onComplete: -> bed.children[2].visible = false })
                 TweenLite.to(bed.children[3].position, 1, { y: -1, delay: .6, onComplete: -> bed.children[3].visible = false })
                 TweenLite.to(bed.children[4].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[4].visible = false })
-                TweenLite.to(bed.children[5].position, 1, { y: 0, delay: .4, onComplete: -> bed.children[5].visible = false })
-                TweenLite.to(bed.children[6].position, 1, { y: .5, delay: .4, onComplete: -> bed.children[6].visible = false })
-                TweenLite.to(bed.children[7].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[7].visible = false })
-                TweenLite.to(bed.children[8].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[8].visible = false })
+                TweenLite.to(bed.children[5].position, 1, { y: 0, delay: .4 })
+                TweenLite.to(bed.children[6].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[6].visible = false })
+                TweenLite.to(bed.children[7].position, 1, { y: -1, delay: .4 })
+                TweenLite.to(bed.children[8].position, 1, { y: -2, delay: .4, onComplete: -> bed.chlidren[8].visible = false })
 
                 # Roof top-part
                 room.children[3].visible = true
@@ -294,24 +297,7 @@ doRest = ->
             if effects[3] == true
                 TweenLite.to(additional2, 25, { intensity: 0 })
 
-                TweenLite.to(light, 25, { intensity: 0 })
-                TweenLite.to(planken.children[0], 1, { visible: true })
-                TweenLite.to(planken.children[1], 1, { visible: true, delay: 3 })
-                TweenLite.to(planken.children[2], 1, { visible: true, delay: 5 })
-                TweenLite.to(planken.children[3], 1, { visible: true, delay: 6 })
-                TweenLite.to(planken.children[4], 1, { visible: true, delay: 7 })
-                TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
-                TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
-
-                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> bed.children[8].visible = false })
-
-                # TweenLite.to(typemachine.children[2].position, 1, { x : 2, y: 2, z: 2 })
-                
-                effects[3] = false
-
-
-            if effects[3] == true
-                TweenLite.to(additional2, 25, { intensity: 0 })
+                createjs.Sound.play('hammering')
 
                 TweenLite.to(light, 25, { intensity: 0 })
                 TweenLite.to(planken.children[0], 1, { visible: true })
@@ -322,18 +308,24 @@ doRest = ->
                 TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
                 TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
 
-                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> bed.children[8].visible = false })
+                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> stoel.visible = false })
 
                 # TweenLite.to(typemachine.children[2].position, 1, { x : 2, y: 2, z: 2 })
                 
-
                 effects[3] = false
+
+
+            if effects[4] == true
+                # hier nog een paar laatste effecten. 
+                
+                effects[4] = false
+
 
             if effects[effects.length-1] == true
                 $('canvas').fadeOut(1000)
 
                 # fade in credentials.
-                $('#credits').fadeIn(1000)
+                $('.credits').fadeIn(1000)
 
 
         )(sceneObj)
