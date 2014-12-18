@@ -21,25 +21,26 @@ module.exports = function(grunt) {
             compile: {
                 files: {
                     'js/all.min.js': [
-                                      'js/coffee/utils/Prelude.coffee', 
-                                      'js/coffee/utils/Utils.coffee', 
-                                      'js/coffee/utils/Dom.coffee', 
-                                      'js/coffee/anne/Outside.coffee', 
-                                      'js/coffee/anne/Sound.coffee', 
-                                      'js/coffee/anne/Introscreen.coffee', 
-                                      'js/coffee/interaction/Cardboard.coffee', 
-                                      'js/coffee/interaction/Mouse.coffee', 
-                                      'js/coffee/data/Loading.coffee', 
-                                      'js/coffee/render/Shader.coffee', 
-                                      'js/coffee/anne/Room.coffee', 
-                                      'js/coffee/render/Render.coffee', 
-                                      'js/coffee/geom/ThreeObj.coffee', 
-                                      'js/coffee/camera/Camera.coffee', 
-                                      'js/coffee/light/Light.coffee', 
-                                      'js/coffee/interaction/Animation.coffee', 
-                                      'js/coffee/Settings.coffee', 
-                                      'js/coffee/Setup.coffee', 
-                                      'js/coffee/Main.coffee']
+                        'js/coffee/utils/Prelude.coffee', 
+                        'js/coffee/utils/Utils.coffee', 
+                        'js/coffee/utils/Dom.coffee', 
+                        'js/coffee/anne/Outside.coffee', 
+                        'js/coffee/anne/Sound.coffee', 
+                        'js/coffee/anne/Introscreen.coffee', 
+                        'js/coffee/interaction/Cardboard.coffee', 
+                        'js/coffee/interaction/Mouse.coffee', 
+                        'js/coffee/data/Loading.coffee', 
+                        'js/coffee/render/Shader.coffee', 
+                        'js/coffee/anne/Room.coffee', 
+                        'js/coffee/render/Render.coffee', 
+                        'js/coffee/geom/ThreeObj.coffee', 
+                        'js/coffee/camera/Camera.coffee', 
+                        'js/coffee/light/Light.coffee', 
+                        'js/coffee/interaction/Animation.coffee', 
+                        'js/coffee/Settings.coffee', 
+                        'js/coffee/Setup.coffee', 
+                        'js/coffee/Main.coffee'
+                    ]
                 }
             }
         },
@@ -57,6 +58,8 @@ module.exports = function(grunt) {
                     'js/vendor/OrbitControls.js',
                     'js/vendor/jph.js',
                     'js/vendor/soundjs-0.5.2.min.js',
+                    'js/vendor/gyro.js',
+                    'js/vendor/looking.js',
                     'js/all.min.js'
                 ],
 		        dest: 'js/all.min.js',

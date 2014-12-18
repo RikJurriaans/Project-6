@@ -13,9 +13,9 @@ Sound.initSounds = (rdy) ->
         { id: 'outro', src: 'sounds/voiceover/outro.ogg' }
         { id: 'room', src: 'sounds/voiceover/room.ogg' }
 
-        # { id: 'introEN', src: 'sounds/voiceover/introEN.ogg' }
-        # { id: 'outroEN', src: 'sounds/voiceover/outroEN.ogg' }
-        # { id: 'roomEN', src: 'sounds/voiceover/roomEN.ogg' }
+        { id: 'introEN', src: 'sounds/voiceover/introEN.ogg' }
+        { id: 'outroEN', src: 'sounds/voiceover/outroEN.ogg' }
+        { id: 'roomEN', src: 'sounds/voiceover/roomEN.ogg' }
     ]
 
     createjs.Sound.registerManifest(manifest, '')

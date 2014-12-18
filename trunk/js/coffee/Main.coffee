@@ -5,8 +5,45 @@
 
 # Hier begint de preloader.
 
-real = [1,2,4,7,10,11]
-# fast = [1,1,1,1,1]
+buttonText = {
+    flag: {
+        en: 'Help I\'m English',
+        nl: 'Help ik ben Nederlands'
+    }
+}
+
+introintro = {
+    en: '<a href="javascript:;" class="en language">Help! Ik spreek geen Engels</a>
+        <h1>Tab on the screen and put your phone</h1>
+        <h1>in the Google Cardboard</h1>
+        <a href="javascript:;" class="putoncardboard">I\'m ready</a>'
+
+    nl: '<a href="javascript:;" class="en language">Help! I don\'t speak dutch</a>
+        <h1>Tap op het scherm en zet de telefoon</h1>
+        <h1>in de Google Cardboard</h1>
+        <a href="javascript:;" class="putoncardboard">Ik ben er klaar voor</a>'
+}
+
+introText = {
+    en: '<h1>Anne\'s cardboard world.</h2> <p>Anne Frank was a girl with a lot of dreams. Unfortunately this dreams never came true... Discover how she would have felt when living in the back annex.</p> <a class="start" href="javascript:;">Nod to start</a>',
+    nl: '<h1>Anne\'s kartonnen wereld.</h2> <p>Anne was een meisje met heel veel dromen. Helaas heeft zij deze niet waar kunnen maken... Ontdek nu hoe zij zich voelde toen ze in het achterhuis verbleef.</p> <a class="start" href="javascript:;">Knikken om te beginnen</a>'
+}
+
+outroText = {
+    en: '<h1>The end</h2>
+        <p>In worldwar 2 72 million people heve been killed, 6 million of them where Jewish, these people died from hunger, fatique, and much more terrible things. Something like this may never happen again.</p>
+        <a class="replay" href="javascript:;">Nod to restart</a>'
+    nl: '<h1>Einde</h2>
+        <p>In de tweede wereldoorlog zijn 72 miljoen mensen van het leven beroofd, waarvan 6 miljoen van Joodse afkomst.
+        Zij stierven in vernietigings kampen aan honger, uitputting, en andere vreselijke dingen.</p>
+        <a class="replay" href="javascript:;">Knikken om opnieuw te starten</a>'
+}
+
+language = 'NL'
+
+
+# real = [1,2,4,7,10,11]
+real = [1,1,1,1,1]
 
 times = (->
     times = _.map(real, Utils.toMilliseconds)
@@ -51,33 +88,70 @@ sun = Outside.sunlight()
 startExperience = ->
     $('.start').off('click', startExperience)
 
-    instance = createjs.Sound.play('intro')
+    if language == 'NL'
+        instance = createjs.Sound.play('intro')
+    else
+        instance = createjs.Sound.play('introEN')
 
-    #instance.addEventListener('complete', ->
-    $('.split').fadeOut(2500)
-    instance = createjs.Sound.play('happy', { loop:-1 })
-    instance.volume = 0
+    
+    instance.addEventListener('complete', ->
 
-    TweenLite.to(instance, 1000, { volume: 100 })
+        if language == 'NL'
+            instance = createjs.Sound.play('room')
+        else
+            instance = createjs.Sound.play('roomEN')
 
-    # Make a list of events.
-    events = _.map(times, (time, i) ->
-        setInterval(->
-            effects[i] = true
-            clearInterval(events[i])
-        , time)
+        $('.split').fadeOut(2500)
+        instance = createjs.Sound.play('happy', { loop:-1 })
+        instance.volume = 0
+
+        TweenLite.to(instance, 1000, { volume: 100 })
+
+        # Make a list of events.
+        events = _.map(times, (time, i) ->
+            setInterval(->
+                effects[i] = true
+                clearInterval(events[i])
+            , time)
+        )
     )
-    #)
 
 
-$('.start').on('click', startExperience)
+switchLanguage = -> if language == 'EN' then language = 'NL' else language = 'EN'
+
+changeText = ->
+    $('.introscreen').html(introText[language.toLowerCase()])
+    $('.credits').html(outroText[language.toLowerCase()])
+    $('.introintro').html(introintro[language.toLowerCase()])
+
+addEvents = ->
+    $('.start').on('click', startExperience)
+    $('.putoncardboard').on('click', startIntroscreen)
+    $('.language').on('click', changeLanguage)
+
+changeLanguage = ->
+    switchLanguage()
+    changeText()
+    addEvents()
+
+addEvents()
+
+startIntroscreen = ->
+    Cardboard.fullscreen()
+    $('.introintro').fadeOut(1000)
+    looking.nod(startExperience)
+
+$('.putoncardboard').on('click', startIntroscreen)
+
+
+
 
 standardTexture = ThreeObj.texture(Utils.texture 'flat-texture')
 standardTextureList = (children) -> _.map(children, (x) -> x.material = standardTexture)
 
 
 doRest = ->
-    Loader.loadModel(Utils.model('lamp'), (lamp) -> Loader.loadModel(Utils.model('paspop'), (paspop) -> Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+    Loader.loadModel(Utils.model('dagboek'), (dagboek) -> Loader.loadModel(Utils.model('lamp'), (lamp) -> Loader.loadModel(Utils.model('paspop'), (paspop) -> Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
         additional = new THREE.PointLight(0xffffff, 1, 13)
         additional.position.set(0,0,0)
 
@@ -96,6 +170,13 @@ doRest = ->
         boekenkast.scale.set(6, 6, 6)
         boekenkast.position.set(-17, -1, 30)
         standardTextureList(boekenkast.children)
+
+        console.log boekenkast.children
+
+        boeken = _.filter(boekenkast.children, (x) -> x.name.indexOf('boek') > -1)
+        
+        console.log boeken
+
 
         muurplank.scale.set(-6, 6, -6)
         muurplank.position.normalize().set(-18, -0, -0)
@@ -117,6 +198,9 @@ doRest = ->
         console.log bed
         standardTextureList(bed.children)
 
+        dagboek.position.normalize().set(-10, -14, 1)
+        dagboek.scale.set(6,6,6)
+        standardTextureList(dagboek.children)
 
         tafel.position.normalize().set(-10, -14, 1)
         tafel.scale.set(6,6,6)
@@ -207,7 +291,7 @@ doRest = ->
         
 
         # alle objecten verplaatsen
-        sceneObj = [additional, additional2, lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+        sceneObj = [dagboek, additional, additional2, lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
 
         ThreeObj.translateAllX(sceneObj, 10)
         ThreeObj.translateAllY(sceneObj, 20)
@@ -322,12 +406,19 @@ doRest = ->
 
 
             if effects[effects.length-1] == true
+                effects[effects.length-1] = false
+
                 $('canvas').fadeOut(1000)
+
+                if language == 'NL'
+                    instance = createjs.Sound.play('outro')
+                else
+                    instance = createjs.Sound.play('outroEN')
 
                 # fade in credentials.
                 $('.credits').fadeIn(1000)
 
 
         )(sceneObj)
-    ))))))))))))))))
+    )))))))))))))))))
 

@@ -2,20 +2,19 @@ module 'Cardboard'
 
 fullBrowser = (effect) -> effect.setSize(window.innerWidth, window.innerHeight)
 
-fullscreen = ->
-    if (@renderer.domElement.requestFullscreen)
-        @renderer.domElement.requestFullscreen()
-    else if (@renderer.domElement.msRequestFullscreen)
-        @renderer.domElement.msRequestFullscreen()
-    else if (@renderer.domElement.mozRequestFullScreen)
-        @renderer.domElement.mozRequestFullScreen()
-    else if (@renderer.domElement.webkitRequestFullscreen)
-        @renderer.domElement.webkitRequestFullscreen()
+Cardboard.fullscreen = ->
+    if (document.body.requestFullscreen)
+        document.body.requestFullscreen()
+    else if (document.body.msRequestFullscreen)
+        document.body.msRequestFullscreen()
+    else if (document.body.mozRequestFullScreen)
+        document.body.mozRequestFullScreen()
+    else if (document.body.webkitRequestFullscreen)
+        document.body.webkitRequestFullscreen()
 
 initControls = (e) ->
     if e.alpha
         window.removeEventListener('deviceorientation', initControls, false)
-        @renderer.domElement.addEventListener('click', _.bind(fullscreen, renderer : @renderer), false)
         @orbitControls.enabled = false
         @controls.connect()
         @controls.update()
