@@ -42,7 +42,7 @@ outroText = {
 language = 'NL'
 
 
-real = [1,2,3,5,7,12,17]
+real = [1,2,3,5,7,12,15]
 # real = [1,1,1,1,1,1,1]
 
 times = (->
@@ -422,8 +422,6 @@ doRest = ->
 
                 createjs.Sound.stop('sad')
 
-                $('canvas').fadeOut(1000)
-
                 if language == 'NL'
                     instance = createjs.Sound.play('outro')
                 else
@@ -434,8 +432,8 @@ doRest = ->
                 $('.introscreen').css({ opacity: 0 })
                 $('.split').fadeIn(1000)
                 
-                $('.start').on('click', startExperience)
-                looking.nod(startExperience)
+                $('.start').on('click', -> window.location.reload())
+                looking.nod(-> window.location.reload())
 
 
         )(sceneObj)
