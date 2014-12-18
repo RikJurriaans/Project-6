@@ -42,8 +42,8 @@ outroText = {
 language = 'NL'
 
 
-# real = [1,2,3,5,7,12,17]
-real = [1,1,1,1,1,1,1]
+real = [1,2,3,5,7,12,17]
+# real = [1,1,1,1,1,1,1]
 
 times = (->
     times = _.map(real, (x) ->
@@ -94,27 +94,26 @@ startExperience = ->
     else
         instance = createjs.Sound.play('introEN')
 
-    
-    # instance.addEventListener('complete', ->
-    if language == 'NL'
-        instance = createjs.Sound.play('room')
-    else
-        instance = createjs.Sound.play('roomEN')
+    instance.addEventListener('complete', ->
+        if language == 'NL'
+            instance = createjs.Sound.play('room')
+        else
+            instance = createjs.Sound.play('roomEN')
 
-    $('.split').fadeOut(2500)
-    instance = createjs.Sound.play('happy', { loop:-1 })
-    instance.volume = 0
+        $('.split').fadeOut(2500)
+        instance = createjs.Sound.play('happy', { loop:-1 })
+        instance.volume = 0
 
-    TweenLite.to(instance, 1000, { volume: 100 })
+        TweenLite.to(instance, 1000, { volume: 100 })
 
-    # Make a list of events.
-    events = _.map(times, (time, i) ->
-        setInterval(->
-            effects[i] = true
-            clearInterval(events[i])
-        , time)
+        # Make a list of events.
+        events = _.map(times, (time, i) ->
+            setInterval(->
+                effects[i] = true
+                clearInterval(events[i])
+            , time)
+        )
     )
-    # )
 
 
 switchLanguage = -> if language == 'EN' then language = 'NL' else language = 'EN'
@@ -378,6 +377,17 @@ doRest = ->
 
 
             if effects[3] == true
+                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> stoel.visible = false })
+
+                TweenLite.to(typemachine.position, 5, { y : -35 })
+                TweenLite.to(tafel.position, 5, { y : -35, delay: 4 })
+
+                TweenLite.to(dagboekLight, 7, { intensity: 1 })
+                
+                effects[3] = false
+
+
+            if effects[4] == true
                 TweenLite.to(additional2, 25, { intensity: 0 })
 
                 createjs.Sound.play('hammering')
@@ -391,18 +401,7 @@ doRest = ->
                 TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
                 TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
 
-                
-                effects[3] = false
-
-
-            if effects[4] == true
-                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> stoel.visible = false })
-
-                TweenLite.to(typemachine.position, 5, { y : -35 })
-                TweenLite.to(tafel.position, 5, { y : -35, delay: 4 })
-
-                TweenLite.to(dagboekLight, 5, { intensity: 1 })
-
+                TweenLite.to(dagboekLight, 5, { intensity: 0, delay: 5 })
                 effects[4] = false
 
 
@@ -414,7 +413,6 @@ doRest = ->
                     TweenLite.to(x.position, .5, { y: -10, delay: delay })
                 )
 
-                TweenLite.to(dagboekLight, 5, { intensity: 0, delay: 20 })
                 
                 effects[5] = false
 
@@ -435,6 +433,9 @@ doRest = ->
                 $('.credits').css({ opacity: 1 })
                 $('.introscreen').css({ opacity: 0 })
                 $('.split').fadeIn(1000)
+                
+                $('.start').on('click', startExperience)
+                looking.nod(startExperience)
 
 
         )(sceneObj)
