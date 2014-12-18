@@ -42,13 +42,13 @@ outroText = {
 language = 'NL'
 
 
-# real = [1,2,4,7,10,11]
-real = [1,1,1,1,1]
+# real = [1,2,3,5,7,12,17]
+real = [1,1,1,1,1,1,1]
 
 times = (->
-    times = _.map(real, Utils.toMilliseconds)
-    _.map(_.zip(times, [].concat([0], _.rest(times))),
-        (x) -> x[0] + x[1])
+    times = _.map(real, (x) ->
+        Utils.toMilliseconds(x) + 2
+    )
 )()
 
 
@@ -87,6 +87,7 @@ sun = Outside.sunlight()
 
 startExperience = ->
     $('.start').off('click', startExperience)
+    $('.divider').fadeOut(500)
 
     if language == 'NL'
         instance = createjs.Sound.play('intro')
@@ -94,27 +95,26 @@ startExperience = ->
         instance = createjs.Sound.play('introEN')
 
     
-    instance.addEventListener('complete', ->
+    # instance.addEventListener('complete', ->
+    if language == 'NL'
+        instance = createjs.Sound.play('room')
+    else
+        instance = createjs.Sound.play('roomEN')
 
-        if language == 'NL'
-            instance = createjs.Sound.play('room')
-        else
-            instance = createjs.Sound.play('roomEN')
+    $('.split').fadeOut(2500)
+    instance = createjs.Sound.play('happy', { loop:-1 })
+    instance.volume = 0
 
-        $('.split').fadeOut(2500)
-        instance = createjs.Sound.play('happy', { loop:-1 })
-        instance.volume = 0
+    TweenLite.to(instance, 1000, { volume: 100 })
 
-        TweenLite.to(instance, 1000, { volume: 100 })
-
-        # Make a list of events.
-        events = _.map(times, (time, i) ->
-            setInterval(->
-                effects[i] = true
-                clearInterval(events[i])
-            , time)
-        )
+    # Make a list of events.
+    events = _.map(times, (time, i) ->
+        setInterval(->
+            effects[i] = true
+            clearInterval(events[i])
+        , time)
     )
+    # )
 
 
 switchLanguage = -> if language == 'EN' then language = 'NL' else language = 'EN'
@@ -152,6 +152,7 @@ standardTextureList = (children) -> _.map(children, (x) -> x.material = standard
 
 doRest = ->
     Loader.loadModel(Utils.model('dagboek'), (dagboek) -> Loader.loadModel(Utils.model('lamp'), (lamp) -> Loader.loadModel(Utils.model('paspop'), (paspop) -> Loader.loadModel(Utils.model('stoel'), (stoel) -> Loader.loadModel(Utils.model('planken'), (planken) -> Loader.loadModel(Utils.model('typemachine'), (typemachine) -> Loader.loadModel(Utils.model('huisje'), (huisje) -> Loader.loadModel(Utils.model('bed'), (bed) -> Loader.loadModel(Utils.model('tafel'), (tafel) -> Loader.loadModel(Utils.model('muur-plank'), (muurplank) -> Loader.loadModel(Utils.model('trees2'), (trees2) -> Loader.loadModel(Utils.model('trees'), (trees) -> Loader.loadModel(Utils.model('omgeving'), (obj) -> Room.create((room, objects) -> Loader.loadModel(Utils.model('luie-stoel'), (luieStoel) -> Loader.loadModel(Utils.model('boekenkast'), (boekenkast) -> 
+
         additional = new THREE.PointLight(0xffffff, 1, 13)
         additional.position.set(0,0,0)
 
@@ -171,12 +172,9 @@ doRest = ->
         boekenkast.position.set(-17, -1, 30)
         standardTextureList(boekenkast.children)
 
-        console.log boekenkast.children
-
         boeken = _.filter(boekenkast.children, (x) -> x.name.indexOf('boek') > -1)
-        
-        console.log boeken
 
+        # _.map(boeken, (x) -> x.material = ThreeObj.texture(randomTexture()))
 
         muurplank.scale.set(-6, 6, -6)
         muurplank.position.normalize().set(-18, -0, -0)
@@ -190,17 +188,18 @@ doRest = ->
 
         typemachine.scale.set(-6, 6, -6)
         typemachine.position.set(-7, -6, 0)
-        console.log typemachine.children
         standardTextureList(typemachine.children)
 
         bed.position.normalize().set(28, -14, 40)
         bed.scale.set(5,5,5)
-        console.log bed
         standardTextureList(bed.children)
 
         dagboek.position.normalize().set(-10, -14, 1)
         dagboek.scale.set(6,6,6)
         standardTextureList(dagboek.children)
+
+        dagboekLight = new THREE.PointLight(0xffffff, 0, 13)
+        dagboekLight.position.normalize().set(-10, -10, 1)
 
         tafel.position.normalize().set(-10, -14, 1)
         tafel.scale.set(6,6,6)
@@ -291,7 +290,7 @@ doRest = ->
         
 
         # alle objecten verplaatsen
-        sceneObj = [dagboek, additional, additional2, lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
+        sceneObj = [dagboekLight, dagboek, additional, additional2, lamp, paspop, planken, typemachine, huisje, trees2, boekenkast, luieStoel, muurplank, bed, tafel, trees, objects[0], objects[1], stoel, wolk2, wolk3, light, wolk1, sun[0], room, ground]
 
         ThreeObj.translateAllX(sceneObj, 10)
         ThreeObj.translateAllY(sceneObj, 20)
@@ -370,7 +369,7 @@ doRest = ->
                 TweenLite.to(bed.children[5].position, 1, { y: 0, delay: .4 })
                 TweenLite.to(bed.children[6].position, 1, { y: -1, delay: .4, onComplete: -> bed.children[6].visible = false })
                 TweenLite.to(bed.children[7].position, 1, { y: -1, delay: .4 })
-                TweenLite.to(bed.children[8].position, 1, { y: -2, delay: .4, onComplete: -> bed.chlidren[8].visible = false })
+                TweenLite.to(bed.children[8].position, 1, { y: -2, delay: .4 })
 
                 # Roof top-part
                 room.children[3].visible = true
@@ -392,21 +391,38 @@ doRest = ->
                 TweenLite.to(planken.children[5], 1, { visible: true, delay: 8 })
                 TweenLite.to(planken.children[6], 1, { visible: true, delay: 9 })
 
-                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> stoel.visible = false })
-
-                # TweenLite.to(typemachine.children[2].position, 1, { x : 2, y: 2, z: 2 })
                 
                 effects[3] = false
 
 
             if effects[4] == true
-                # hier nog een paar laatste effecten. 
-                
+                TweenLite.to(stoel.position, .4, { y: -35, delay: .4, onComplete: -> stoel.visible = false })
+
+                TweenLite.to(typemachine.position, 5, { y : -35 })
+                TweenLite.to(tafel.position, 5, { y : -35, delay: 4 })
+
+                TweenLite.to(dagboekLight, 5, { intensity: 1 })
+
                 effects[4] = false
 
 
-            if effects[effects.length-1] == true
+            if effects[5] == true
+                _.map(boeken, (x) ->
+                    delay = Math.random() + 1
+                    TweenLite.to(x.position, 1, { x: "+=1", delay: delay })
+                    delay = delay + (Math.random() + 1)
+                    TweenLite.to(x.position, .5, { y: -10, delay: delay })
+                )
+
+                TweenLite.to(dagboekLight, 5, { intensity: 0, delay: 20 })
+                
+                effects[5] = false
+
+
+            if effects[6] == true
                 effects[effects.length-1] = false
+
+                createjs.Sound.stop('sad')
 
                 $('canvas').fadeOut(1000)
 
@@ -416,7 +432,9 @@ doRest = ->
                     instance = createjs.Sound.play('outroEN')
 
                 # fade in credentials.
-                $('.credits').fadeIn(1000)
+                $('.credits').css({ opacity: 1 })
+                $('.introscreen').css({ opacity: 0 })
+                $('.split').fadeIn(1000)
 
 
         )(sceneObj)
